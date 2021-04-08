@@ -21,5 +21,5 @@ public class Actor {
 
   private Date updatedDate;
 
-  private List<String> usedName;
+  private String usedName;
 }

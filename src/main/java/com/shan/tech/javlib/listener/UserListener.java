@@ -1,19 +1,20 @@
 package com.shan.tech.javlib.listener;
 
+import com.shan.tech.javlib.consts.RedisConsts;
 import com.shan.tech.javlib.pojo.User;
 import com.shan.tech.javlib.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserListener implements ServletContextListener {
@@ -22,8 +23,6 @@ public class UserListener implements ServletContextListener {
 
   private UserService userService;
 
-  private static final String ALL_USER = "ALL_USER_LIST";
-
   Logger logger = LogManager.getLogger(this.getClass());
 
   @Override
@@ -31,14 +30,12 @@ public class UserListener implements ServletContextListener {
     logger.info("redis start ");
     WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContextEvent.getServletContext());
     userService = webApplicationContext.getBean(UserService.class);
-    redisTemplate = webApplicationContext.getBean("redisTemplate",RedisTemplate.class);
+    redisTemplate = webApplicationContext.getBean("redisTemplate", RedisTemplate.class);
     List<User> userList = userService.findAll();
-    redisTemplate.delete(ALL_USER);
+    redisTemplate.delete(RedisConsts.HASH_ALL_USER);
 
-    redisTemplate.opsForList().leftPushAll(ALL_USER, userList);
+    redisTemplate.opsForHash().putAll(RedisConsts.HASH_ALL_USER, userList.stream().collect(Collectors.toMap(User::getId, User -> User)));
 
-    List<User> redisUserList = redisTemplate.opsForList().range(ALL_USER, 0, -1);
-    logger.info("redis user: " + redisUserList.size());
   }
 
 }

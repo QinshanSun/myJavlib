@@ -23,18 +23,120 @@
         <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
         <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <resultMap id="DetailedResultMap" type="com.shan.tech.javlib.pojo.Video">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="INTEGER"/>
+        <result column="rated" property="rated" jdbcType="VARCHAR"/>
+        <result column="released" property="released" jdbcType="VARCHAR"/>
+        <result column="runtime" property="runTime" jdbcType="INTEGER"/>
+        <result column="director" property="director" jdbcType="VARCHAR"/>
+        <result column="plot" property="plot" jdbcType="VARCHAR"/>
+        <result column="poster" property="poster" jdbcType="VARCHAR"/>
+        <result column="rating" property="rating" jdbcType="DOUBLE"/>
+        <result column="meta_score" property="metaScore" jdbcType="DOUBLE"/>
+        <result column="votes" property="votes" jdbcType="INTEGER"/>
+        <result column="producer" property="producer" jdbcType="VARCHAR"/>
+        <result column="publisher" property="publisher" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP"/>
+        <collection property="actorList" ofType="com.shan.tech.javlib.pojo.Actor">
+            <result column="id" property="id" jdbcType="BIGINT"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="label" property="label" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
     <select id="findById" resultMap="BaseResultMap">
-        SELECT id, title, label, number, title, year, rated, released, runtime, director, plot, poster,
-        rating, meta_score,votes, producer, publisher, created_date, updated_date
-        FROM video WHERE id = #{id}
+        SELECT id,
+               title,
+               label,
+               number,
+               title,
+               year,
+               rated,
+               released,
+               runtime,
+               director,
+               plot,
+               poster,
+               rating,
+               meta_score,
+               votes,
+               producer,
+               publisher,
+               created_date,
+               updated_date
+        FROM video
+        WHERE id = #{id}
     </select>
     <select id="findByLabel" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre WHERE label = #{label}
+        SELECT id,
+               title,
+               label,
+               number,
+               title,
+               year,
+               rated,
+               released,
+               runtime,
+               director,
+               plot,
+               poster,
+               rating,
+               meta_score,
+               votes,
+               producer,
+               publisher,
+               created_date,
+               updated_date
+        FROM video
+        WHERE label = #{label}
     </select>
-    <select id="findGenresByName" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre WHERE name like %#{name}%
+    <select id="findVideosByTitle" resultMap="BaseResultMap">
+        SELECT id,
+               title,
+               label,
+               number,
+               title,
+               year,
+               rated,
+               released,
+               runtime,
+               director,
+               plot,
+               poster,
+               rating,
+               meta_score,
+               votes,
+               producer,
+               publisher,
+               created_date,
+               updated_date
+        FROM video
+        WHERE title like #{title}
     </select>
     <select id="findAll" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre
+        SELECT id,
+               title,
+               label,
+               number,
+               title,
+               year,
+               rated,
+               released,
+               runtime,
+               director,
+               plot,
+               poster,
+               rating,
+               meta_score,
+               votes,
+               producer,
+               publisher,
+               created_date,
+               updated_date
+        FROM video
     </select>
 </mapper>

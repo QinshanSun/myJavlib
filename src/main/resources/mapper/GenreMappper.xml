@@ -9,15 +9,22 @@
         <result column="label" property="label" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="findById" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre WHERE id = #{id}
+        SELECT id, name, label
+        FROM genre
+        WHERE id = #{id}
     </select>
     <select id="findByLabel" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre WHERE label = #{label}
+        SELECT id, name, label
+        FROM genre
+        WHERE label = #{label}
     </select>
     <select id="findGenresByName" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre WHERE name like %#{name}%
+        SELECT id, name, label
+        FROM genre
+        WHERE name like #{name}
     </select>
     <select id="findAll" resultMap="BaseResultMap">
-        SELECT id, name, label FROM genre
+        SELECT id, name, label
+        FROM genre
     </select>
 </mapper>

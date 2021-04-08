@@ -11,9 +11,12 @@
         <result column="updated_date" property="updated_date" jdbcType="DATE"/>
     </resultMap>
     <select id="findById" resultMap="BaseResultMap">
-        SELECT id, name, password, created_date, updated_date FROM user WHERE id = #{id}
+        SELECT id, name, password, created_date, updated_date
+        FROM user
+        WHERE id = #{id}
     </select>
     <select id="findAll" resultMap="BaseResultMap">
-        SELECT id, name, password, created_date, updated_date FROM user
+        SELECT id, name, password, created_date, updated_date
+        FROM user
     </select>
 </mapper>

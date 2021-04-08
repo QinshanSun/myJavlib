@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shan.tech.javlib.mapper.GenreMapper">
+    <resultMap id="BaseResultMap" type="com.shan.tech.javlib.pojo.Genre">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT id, name, label FROM genre WHERE id = #{id}
+    </select>
+    <select id="findByLabel" resultMap="BaseResultMap">
+        SELECT id, name, label FROM genre WHERE label = #{label}
+    </select>
+    <select id="findGenresByName" resultMap="BaseResultMap">
+        SELECT id, name, label FROM genre WHERE name like %#{name}%
+    </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT id, name, label FROM genre
+    </select>
+</mapper>

@@ -4,16 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shan.tech.javlib.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="com.shan.tech.javlib.pojo.User">
-        <result column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="NAME" property="name" jdbcType="VARCHAR"/>
-        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
-        <result column="CREATED_DATE" property="created_date" jdbcType="DATE"/>
-        <result column="UPDATED_DATE" property="updated_date" jdbcType="DATE"/>
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="created_date" property="created_date" jdbcType="DATE"/>
+        <result column="updated_date" property="updated_date" jdbcType="DATE"/>
     </resultMap>
     <select id="findById" resultMap="BaseResultMap">
-        SELECT * FROM USER WHERE ID = #{id}
+        SELECT id, name, password, created_date, updated_date FROM user WHERE id = #{id}
     </select>
     <select id="findAll" resultMap="BaseResultMap">
-        SELECT * FROM USER
+        SELECT id, name, password, created_date, updated_date FROM user
     </select>
 </mapper>

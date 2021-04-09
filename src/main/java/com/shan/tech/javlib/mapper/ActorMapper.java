@@ -2,6 +2,7 @@ package com.shan.tech.javlib.mapper;
 
 import com.shan.tech.javlib.pojo.Actor;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,6 @@ public interface ActorMapper {
 
     List<Actor> findAll();
 
-    List<Actor> findActorsByName(String name);
+    List<Actor> findActorsByName(@Param("name") String name);
 
 }

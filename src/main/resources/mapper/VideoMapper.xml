@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shan.tech.javlib.mapper.VideoMapper">
-    <resultMap id="BaseResultMap" type="com.shan.tech.javlib.pojo.Video">
+    <resultMap id="BaseVideoResultMap" type="com.shan.tech.javlib.pojo.Video">
         <result column="id" property="id" jdbcType="BIGINT"/>
         <result column="label" property="label" jdbcType="VARCHAR"/>
         <result column="number" property="number" jdbcType="VARCHAR"/>
@@ -23,7 +23,7 @@
         <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
         <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <resultMap id="DetailedResultMap" type="com.shan.tech.javlib.pojo.Video">
+    <resultMap id="DetailedVideoResultMap" type="com.shan.tech.javlib.pojo.Video">
         <result column="id" property="id" jdbcType="BIGINT"/>
         <result column="label" property="label" jdbcType="VARCHAR"/>
         <result column="number" property="number" jdbcType="VARCHAR"/>
@@ -46,97 +46,138 @@
             <result column="id" property="id" jdbcType="BIGINT"/>
             <result column="name" property="name" jdbcType="VARCHAR"/>
             <result column="label" property="label" jdbcType="VARCHAR"/>
+            <result column="used_name" property="usedName" jdbcType="VARCHAR"/>
+        </collection>
+        <collection property="genreList" ofType="com.shan.tech.javlib.pojo.Genre">
+            <result column="id" property="id" jdbcType="BIGINT"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="label" property="label" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
-    <select id="findById" resultMap="BaseResultMap">
+    <select id="findById" resultMap="BaseVideoResultMap">
         SELECT id,
-               title,
-               label,
-               number,
-               title,
-               year,
-               rated,
-               released,
-               runtime,
-               director,
-               plot,
-               poster,
-               rating,
-               meta_score,
-               votes,
-               producer,
-               publisher,
-               created_date,
-               updated_date
+        title,
+        label,
+        number,
+        title,
+        year,
+        rated,
+        released,
+        runtime,
+        director,
+        plot,
+        poster,
+        rating,
+        meta_score,
+        votes,
+        producer,
+        publisher,
+        created_date,
+        updated_date
         FROM video
         WHERE id = #{id}
     </select>
-    <select id="findByLabel" resultMap="BaseResultMap">
+    <select id="findByLabel" resultMap="BaseVideoResultMap">
         SELECT id,
-               title,
-               label,
-               number,
-               title,
-               year,
-               rated,
-               released,
-               runtime,
-               director,
-               plot,
-               poster,
-               rating,
-               meta_score,
-               votes,
-               producer,
-               publisher,
-               created_date,
-               updated_date
+        title,
+        label,
+        number,
+        title,
+        year,
+        rated,
+        released,
+        runtime,
+        director,
+        plot,
+        poster,
+        rating,
+        meta_score,
+        votes,
+        producer,
+        publisher,
+        created_date,
+        updated_date
         FROM video
         WHERE label = #{label}
     </select>
-    <select id="findVideosByTitle" resultMap="BaseResultMap">
+    <select id="findVideosByTitle" resultMap="BaseVideoResultMap">
         SELECT id,
-               title,
-               label,
-               number,
-               title,
-               year,
-               rated,
-               released,
-               runtime,
-               director,
-               plot,
-               poster,
-               rating,
-               meta_score,
-               votes,
-               producer,
-               publisher,
-               created_date,
-               updated_date
+        title,
+        label,
+        number,
+        title,
+        year,
+        rated,
+        released,
+        runtime,
+        director,
+        plot,
+        poster,
+        rating,
+        meta_score,
+        votes,
+        producer,
+        publisher,
+        created_date,
+        updated_date
         FROM video
         WHERE title like #{title}
     </select>
-    <select id="findAll" resultMap="BaseResultMap">
+    <select id="findAll" resultMap="BaseVideoResultMap">
         SELECT id,
-               title,
-               label,
-               number,
-               title,
-               year,
-               rated,
-               released,
-               runtime,
-               director,
-               plot,
-               poster,
-               rating,
-               meta_score,
-               votes,
-               producer,
-               publisher,
-               created_date,
-               updated_date
+        title,
+        label,
+        number,
+        title,
+        year,
+        rated,
+        released,
+        runtime,
+        director,
+        plot,
+        poster,
+        rating,
+        meta_score,
+        votes,
+        producer,
+        publisher,
+        created_date,
+        updated_date
         FROM video
     </select>
+    <select id="findDetailedVideoById" resultMap="DetailedVideoResultMap">
+        SELECT v.id,
+        v.title,
+        v.label,
+        v.number,
+        v.title,
+        v.year,
+        v.rated,
+        v.released,
+        v.runtime,
+        v.director,
+        v.plot,
+        v.poster,
+        v.rating,
+        v.meta_score,
+        v.votes,
+        v.producer,
+        v.publisher,
+        v.created_date,
+        v.updated_date
+        a.id
+        a.label
+        a.name
+        a.used_name
+        g.id
+        g.label
+        g.name
+        FROM video v
+        left outer join actor_video av on v.id = av.video_id
+        left outer join actor a on av.actor_id = a.id
+        left outer join genre_video gv on v.id = gv.video_id
+        left outer join genre g on g.id = gv.genre_id
+        where v.id = #{id}
+    </select>
+
 </mapper>

@@ -33,9 +33,7 @@ public class UserListener implements ServletContextListener {
     redisTemplate = webApplicationContext.getBean("redisTemplate", RedisTemplate.class);
     List<User> userList = userService.findAll();
     redisTemplate.delete(RedisConsts.HASH_ALL_USER);
-
     redisTemplate.opsForHash().putAll(RedisConsts.HASH_ALL_USER, userList.stream().collect(Collectors.toMap(User::getId, User -> User)));
-
   }
 
 }

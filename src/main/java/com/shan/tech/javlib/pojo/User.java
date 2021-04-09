@@ -17,9 +17,9 @@ public class User implements Serializable {
 
     private String password;
 
-    private Date created_date;
+    private Date createdDate;
 
-    private Date updated_date;
+    private Date updatedDate;
 
     @Override
     public int hashCode() {

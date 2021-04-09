@@ -8,8 +8,8 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="label" property="label" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="VARCHAR"/>
-        <result column="created_date" property="created_date" jdbcType="TIMESTAMP"/>
-        <result column="updated_date" property="updated_date" jdbcType="TIMESTAMP"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP"/>
         <result column="used_name" property="usedName" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="findById" resultMap="BaseResultMap">

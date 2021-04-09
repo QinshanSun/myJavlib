@@ -20,16 +20,11 @@ public class UserController {
 
   private UserService userService;
 
-  private RedisTemplate redisTemplate;
 
-  Logger logger = LogManager.getLogger(this.getClass());
+  Logger logger = LogManager.getLogger(UserController.class);
 
   @GetMapping
   public User getUserById(@RequestParam(name = "Id") Long Id) {
-    if (redisTemplate.opsForHash().hasKey("ALL_USER_LIST", Id)) {
-      logger.info("Get User from Redis");
-      return (User) redisTemplate.opsForHash().get("ALL_USER_LIST", Id);
-    }
     return userService.findById(Id).orElseThrow();
   }
 
@@ -45,8 +40,4 @@ public class UserController {
     this.userService = userService;
   }
 
-  @Autowired
-  public void setRedisTemplate(RedisTemplate redisTemplate) {
-    this.redisTemplate = redisTemplate;
-  }
 }

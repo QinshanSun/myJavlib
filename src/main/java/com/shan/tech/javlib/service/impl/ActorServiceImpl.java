@@ -20,6 +20,11 @@ public class ActorServiceImpl implements ActorService {
   }
 
   @Override
+  public Optional<Actor> findByLabel(String label) {
+    return actorMapper.findByLabel(label);
+  }
+
+  @Override
   public List<Actor> findAll() {
     return actorMapper.findAll();
   }
@@ -27,6 +32,11 @@ public class ActorServiceImpl implements ActorService {
   @Override
   public List<Actor> findActorsByName(String name) {
     return actorMapper.findActorsByName(name);
+  }
+
+  @Override
+  public int insertActor(Actor actor) {
+    return actorMapper.insertActor(actor);
   }
 
   @Autowired

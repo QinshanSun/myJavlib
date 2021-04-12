@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shan.tech.javlib.mapper.ActorMapper">
-    <resultMap id="BaseResultMap" type="com.shan.tech.javlib.pojo.Actor">
+    <resultMap id="BaseActorResultMap" type="com.shan.tech.javlib.pojo.Actor">
         <result column="id" property="id" jdbcType="BIGINT"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="label" property="label" jdbcType="VARCHAR"/>
@@ -12,19 +12,28 @@
         <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP"/>
         <result column="used_name" property="usedName" jdbcType="VARCHAR"/>
     </resultMap>
-    <select id="findById" resultMap="BaseResultMap">
+    <select id="findById" resultMap="BaseActorResultMap">
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
         WHERE id = #{id}
     </select>
-    <select id="findAll" resultMap="BaseResultMap">
+    <select id="findByLabel" resultMap="BaseActorResultMap">
+        SELECT id, name, label, type, created_date, updated_date, used_name
+        FROM actor
+        WHERE label = #{label}
+    </select>
+    <select id="findAll" resultMap="BaseActorResultMap">
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
     </select>
-    <select id="findActorsByName" resultMap="BaseResultMap">
+    <select id="findActorsByName" resultMap="BaseActorResultMap">
         <bind name="patten" value="'%' + name + '%'"/>
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
         WHERE name like #{patten}
     </select>
+    <insert id="insertActor">
+        INSERT INTO actor (name, label, type, created_date, updated_date, used_name)
+        VALUES (#{name}, #{label}, #{type}, #{createdDate}, #{updatedDate}, #{usedName})
+    </insert>
 </mapper>

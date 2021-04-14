@@ -27,4 +27,7 @@
         SELECT id, name, label
         FROM genre
     </select>
+    <insert id="insertGenre">
+        INSERT INTO genre (name, label) VALUES (#{name}, #{label})
+    </insert>
 </mapper>

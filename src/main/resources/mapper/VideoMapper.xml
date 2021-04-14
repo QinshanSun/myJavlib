@@ -164,13 +164,13 @@
         v.producer,
         v.publisher,
         v.created_date,
-        v.updated_date
-        a.id
-        a.label
-        a.name
-        a.used_name
-        g.id
-        g.label
+        v.updated_date,
+        a.id,
+        a.label,
+        a.name,
+        a.used_name,
+        g.id,
+        g.label,
         g.name
         FROM video v
         left outer join actor_video av on v.id = av.video_id
@@ -179,5 +179,9 @@
         left outer join genre g on g.id = gv.genre_id
         where v.id = #{id}
     </select>
+    <insert id="insertVideo">
+        INSERT INTO video (title, year, rated, released, runtime, director, plot, poster, rating, meta_score, votes, producer, publisher, created_date, updated_date, label, number)
+        VALUES (#{title},#{year}, #{rated}, #{released}, #{runtime}, #{director}, #{plot}, #{poster}, #{rating}, #{meta_score}, #{votes}, #{producer}, #{publisher}, #{created_date}, #{updated_date}, #{label}, #{number})
+    </insert>
 
 </mapper>

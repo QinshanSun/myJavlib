@@ -12,4 +12,6 @@ public interface VideoService {
   List<Video> findVideosByTitle(String title);
 
   Optional<Video> findDetailedVideoById(Long id);
+
+  int insertVideo(Video video);
 }

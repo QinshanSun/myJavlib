@@ -18,4 +18,6 @@ public interface VideoMapper {
   List<Video> findVideosByTitle(String title);
 
   Optional<Video> findDetailedVideoById(Long id);
+
+  int insertVideo(Video video);
 }

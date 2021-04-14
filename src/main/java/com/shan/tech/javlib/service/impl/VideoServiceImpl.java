@@ -3,6 +3,8 @@ package com.shan.tech.javlib.service.impl;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.mapper.GenreMapper;
 import com.shan.tech.javlib.mapper.VideoMapper;
+import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,16 @@ public class VideoServiceImpl implements VideoService {
   @Override
   public int insertVideo(Video video) {
     return videoMapper.insertVideo(video);
+  }
+
+  @Override
+  public int insertGenresForVideo(List<Genre> genreList, Video video) {
+    return videoMapper.insertGenresForVideo(genreList, video);
+  }
+
+  @Override
+  public int insertActorsForVideo(List<Actor> actorList, Video video) {
+    return videoMapper.insertActorsForVideo(actorList, video);
   }
 
 

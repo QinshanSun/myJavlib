@@ -1,5 +1,7 @@
 package com.shan.tech.javlib.mapper;
 
+import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.pojo.Video;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +22,8 @@ public interface VideoMapper {
   Optional<Video> findDetailedVideoById(Long id);
 
   int insertVideo(Video video);
+
+  int insertGenresForVideo(List<Genre> genreList, Video video);
+
+  int insertActorsForVideo(List<Actor> actorList, Video video);
 }

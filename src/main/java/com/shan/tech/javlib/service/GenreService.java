@@ -1,15 +1,11 @@
-package com.shan.tech.javlib.mapper;
+package com.shan.tech.javlib.service;
 
 import com.shan.tech.javlib.pojo.Genre;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Optional;
 
-@Mapper
-public interface GenreMapper {
-
-  Optional<Genre> findById(Long id);
+public interface GenreService {
 
   Optional<Genre> findByLabel(String label);
 

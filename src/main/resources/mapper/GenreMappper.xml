@@ -30,4 +30,10 @@
     <insert id="insertGenre">
         INSERT INTO genre (name, label) VALUES (#{name}, #{label})
     </insert>
+    <insert id="insertGenreList">
+        INSERT INTO genre (name, label) VALUES
+        <foreach collection="list" item="genre" separator=",">
+            (#{name}, #{label})
+        </foreach>
+    </insert>
 </mapper>

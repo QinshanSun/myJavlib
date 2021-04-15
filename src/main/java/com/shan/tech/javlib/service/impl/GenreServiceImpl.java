@@ -4,10 +4,12 @@ import com.shan.tech.javlib.mapper.GenreMapper;
 import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class GenreServiceImpl implements GenreService {
 
   private GenreMapper genreMapper;

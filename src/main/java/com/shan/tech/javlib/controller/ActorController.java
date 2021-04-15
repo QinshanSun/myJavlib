@@ -11,12 +11,12 @@ public class ActorController {
 
   private ActorService actorService;
 
-  @GetMapping
+  @GetMapping("/id")
   public Actor getActor(@RequestParam(name = "Id") Long id){
     return  actorService.findById(id).orElseThrow();
   }
 
-  @GetMapping
+  @GetMapping("label")
   public Actor getActorByLabel(@RequestParam(name = "label") String label){
     return  actorService.findByLabel(label).orElseThrow();
   }

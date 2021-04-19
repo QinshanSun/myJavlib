@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.engine;
 
+import com.shan.tech.javlib.consts.KafkaConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class KafkaProducer {
 
   public void sendMessage(String message) {
     logger.info(String.format("#### -> Producing message -> %s", message));
-    kafkaTemplate.send(TOPIC, message);
+    kafkaTemplate.send(KafkaConsts.GENRE_TOPIC, message);
   }
 
   @Autowired

@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 public class Video {
 
+  @JsonIgnore
   private Long id;
 
   private String label;

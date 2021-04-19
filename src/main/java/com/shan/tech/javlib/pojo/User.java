@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Data
 public class User implements Serializable {
-
+    @JsonIgnore
     private Long id;
 
     private String name;

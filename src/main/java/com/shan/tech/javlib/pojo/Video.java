@@ -56,13 +56,11 @@ public class Video {
 
   @JsonCreator
   public Video(@JsonProperty("title") String title, @JsonProperty("label") String label,
-               @JsonProperty("year") int year, @JsonProperty("number") String number,
-               @JsonProperty("rated") String rated, @JsonProperty("released") String released) {
+                @JsonProperty("number") String number,
+                @JsonProperty("released") String released) {
     this.title = title;
     this.label = label;
-    this.year = year;
     this.number = number;
-    this.rated = rated;
     this.released = released;
   }
 }

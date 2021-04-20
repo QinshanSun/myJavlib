@@ -1,5 +1,7 @@
 package com.shan.tech.javlib.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shan.tech.javlib.engine.KafkaProducer;
 import com.shan.tech.javlib.pojo.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,10 @@ public class KafkaController {
   }
 
   @GetMapping("/genre")
-  public String producer(@RequestBody Genre genre) {
+  public String producer(@RequestBody Genre genre) throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
     for (int i = 0; i < 12; i++) {
-      kafkaProducer.sendMessage(genre.toString());
+      kafkaProducer.sendMessage(mapper.writeValueAsString(genre));
     }
     return "Message sent to the Kafka Topic java_in_use_topic Successfully";
   }

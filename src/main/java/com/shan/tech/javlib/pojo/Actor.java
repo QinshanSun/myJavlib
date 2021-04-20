@@ -1,6 +1,8 @@
 package com.shan.tech.javlib.pojo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +26,11 @@ public class Actor {
   private Date updatedDate;
 
   private String usedName;
+
+  @JsonCreator
+  public Actor(@JsonProperty("name") String name, @JsonProperty("label") String label, @JsonProperty("type") String type) {
+    this.name = name;
+    this.label = label;
+    this.type = type;
+  }
 }

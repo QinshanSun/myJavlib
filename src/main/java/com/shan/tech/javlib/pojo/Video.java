@@ -1,6 +1,8 @@
 package com.shan.tech.javlib.pojo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -51,4 +53,16 @@ public class Video {
   private List<Actor> actorList;
 
   private List<Genre> genreList;
+
+  @JsonCreator
+  public Video(@JsonProperty("title") String title, @JsonProperty("label") String label,
+               @JsonProperty("year") int year, @JsonProperty("number") String number,
+               @JsonProperty("rated") String rated, @JsonProperty("released") String released) {
+    this.title = title;
+    this.label = label;
+    this.year = year;
+    this.number = number;
+    this.rated = rated;
+    this.released = released;
+  }
 }

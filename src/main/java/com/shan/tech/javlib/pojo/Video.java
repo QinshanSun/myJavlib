@@ -55,9 +55,10 @@ public class Video {
   private List<Genre> genreList;
 
   @JsonCreator
-  public Video(@JsonProperty("title") String title, @JsonProperty("label") String label,
-                @JsonProperty("number") String number,
-                @JsonProperty("released") String released) {
+  public Video(@JsonProperty("title") String title,
+               @JsonProperty("label") String label,
+               @JsonProperty("number") String number,
+               @JsonProperty("released") String released) {
     this.title = title;
     this.label = label;
     this.number = number;

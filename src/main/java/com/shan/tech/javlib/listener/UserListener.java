@@ -1,6 +1,6 @@
 package com.shan.tech.javlib.listener;
 
-import com.shan.tech.javlib.consts.RedisConsts;
+import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.pojo.User;
 import com.shan.tech.javlib.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -32,8 +32,8 @@ public class UserListener implements ServletContextListener {
     userService = webApplicationContext.getBean(UserService.class);
     redisTemplate = webApplicationContext.getBean("redisTemplate", RedisTemplate.class);
     List<User> userList = userService.findAll();
-    redisTemplate.delete(RedisConsts.HASH_ALL_USER);
-    redisTemplate.opsForHash().putAll(RedisConsts.HASH_ALL_USER, userList.stream().collect(Collectors.toMap(User::getId, User -> User)));
+    redisTemplate.delete(RedisConst.HASH_ALL_USER);
+    redisTemplate.opsForHash().putAll(RedisConst.HASH_ALL_USER, userList.stream().collect(Collectors.toMap(User::getId, User -> User)));
   }
 
 }

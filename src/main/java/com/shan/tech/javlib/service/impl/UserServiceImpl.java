@@ -1,6 +1,6 @@
 package com.shan.tech.javlib.service.impl;
 
-import com.shan.tech.javlib.consts.RedisConsts;
+import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.UserMapper;
 import com.shan.tech.javlib.pojo.User;
 import com.shan.tech.javlib.service.UserService;
@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Optional<User> findById(Long id) {
-    if (redisTemplate.opsForHash().hasKey(RedisConsts.HASH_ALL_USER, id)) {
+    if (redisTemplate.opsForHash().hasKey(RedisConst.HASH_ALL_USER, id)) {
       logger.info("Get User from Redis");
-      return Optional.ofNullable((User) redisTemplate.opsForHash().get(RedisConsts.HASH_ALL_USER, id));
+      return Optional.ofNullable((User) redisTemplate.opsForHash().get(RedisConst.HASH_ALL_USER, id));
     }
     return userMapper.findById(id);
   }

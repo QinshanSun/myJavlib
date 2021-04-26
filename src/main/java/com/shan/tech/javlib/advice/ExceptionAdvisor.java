@@ -27,7 +27,7 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
 
   @ResponseBody
   @ExceptionHandler(NoFoundException.class)
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.ACCEPTED)
   public ErrorResponse handleNoFoundException(NoFoundException ex) {
     return new ErrorResponse(ResponseCodeEnum.NOT_FOUND.name(), ex.getMessage());
   }

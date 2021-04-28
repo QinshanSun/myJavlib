@@ -1,6 +1,6 @@
 package com.shan.tech.javlib.configuration;
 
-import com.shan.tech.javlib.consts.KafkaConsts;
+import com.shan.tech.javlib.consts.KafkaConst;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class KafkaTopic {
 
   public NewTopic genreTopic() {
-    return new NewTopic(KafkaConsts.GENRE_TOPIC, KafkaConsts.DEFAULT_PARTITION_NUM, KafkaConsts.DEFAULT_REPLICATION_NUM);
+    return new NewTopic(KafkaConst.GENRE_TOPIC, KafkaConst.DEFAULT_PARTITION_NUM, KafkaConst.DEFAULT_REPLICATION_NUM);
   }
 }

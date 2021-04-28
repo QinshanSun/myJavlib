@@ -7,6 +7,7 @@ import com.shan.tech.javlib.model.exception.NoFoundException;
 import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class GenreServiceImpl implements GenreService {
     if (optionalGenre.isEmpty()) {
       int result = genreMapper.insertGenre(genre);
       if (result == 1) {
-        redisTemplate.opsForSet().add(RedisConst.HASH_ALL_GENRE, genre);
+        redisTemplate.opsForHash().put(genre.getLabel(), RedisConst.HASH_ALL_GENRE, genre);
         return result;
       }
     }

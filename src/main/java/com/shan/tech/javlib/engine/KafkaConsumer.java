@@ -2,7 +2,7 @@ package com.shan.tech.javlib.engine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shan.tech.javlib.consts.KafkaConsts;
+import com.shan.tech.javlib.consts.KafkaConst;
 import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.service.GenreService;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class KafkaConsumer {
     logger.info(String.format("#### -> Consumed message -> %s", message));
   }
 
-  @KafkaListener(id = "genre", clientIdPrefix = "genre-batch",topics = {KafkaConsts.GENRE_TOPIC}, containerFactory = "batchContainerFactory")
+  @KafkaListener(id = "genre", clientIdPrefix = "genre-batch",topics = {KafkaConst.GENRE_TOPIC}, containerFactory = "batchContainerFactory")
   public void consume(@Payload List<String> genreList) {
     logger.info("topic.quick.batch  receive : ");
     for (String s : genreList) {

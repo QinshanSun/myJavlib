@@ -1,6 +1,6 @@
 package com.shan.tech.javlib.consts;
 
-public class KafkaConsts {
+public class KafkaConst {
 
   public final static String GENRE_TOPIC ="topic.jav.genre";
 

@@ -29,11 +29,12 @@ public class UserListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent servletContextEvent) {
     logger.info("redis start ");
     WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContextEvent.getServletContext());
+    assert webApplicationContext != null;
     userService = webApplicationContext.getBean(UserService.class);
     redisTemplate = webApplicationContext.getBean("redisTemplate", RedisTemplate.class);
     List<User> userList = userService.findAll();
     redisTemplate.delete(RedisConst.HASH_ALL_USER);
-    redisTemplate.opsForHash().putAll(RedisConst.HASH_ALL_USER, userList.stream().collect(Collectors.toMap(User::getId, User -> User)));
+    redisTemplate.opsForHash().putAll(RedisConst.HASH_ALL_USER, userList.stream().collect(Collectors.toMap(User->User.getId().toString(), User -> User)));
   }
 
 }

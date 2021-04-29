@@ -19,12 +19,12 @@ public class GenreServiceImpl implements GenreService {
 
   private GenreMapper genreMapper;
 
-  private RedisTemplate redisTemplate;
+  private HashOperations<String, String, Object> hashOperations;
 
   @Override
   public Genre findByLabel(String label) {
-    if (redisTemplate.opsForHash().hasKey(RedisConst.HASH_ALL_GENRE, label)) {
-      return (Genre) redisTemplate.opsForHash().get(RedisConst.HASH_ALL_GENRE, label);
+    if (hashOperations.hasKey(RedisConst.HASH_ALL_GENRE, label)) {
+      return (Genre) hashOperations.get(RedisConst.HASH_ALL_GENRE, label);
     }
     return genreMapper.findByLabel(label).orElseThrow(() -> new NoFoundException(String.format(ErrorMessage.NO_FOUND, Genre.class.getName(), label)));
   }
@@ -45,7 +45,7 @@ public class GenreServiceImpl implements GenreService {
     if (optionalGenre.isEmpty()) {
       int result = genreMapper.insertGenre(genre);
       if (result == 1) {
-        redisTemplate.opsForHash().put(genre.getLabel(), RedisConst.HASH_ALL_GENRE, genre);
+        hashOperations.put(genre.getLabel(), RedisConst.HASH_ALL_GENRE, genre);
         return result;
       }
     }
@@ -63,7 +63,7 @@ public class GenreServiceImpl implements GenreService {
   }
 
   @Autowired
-  public void setRedisTemplate(RedisTemplate redisTemplate) {
-    this.redisTemplate = redisTemplate;
+  public void setHashOperations(HashOperations<String, String, Object> hashOperations) {
+    this.hashOperations = hashOperations;
   }
 }

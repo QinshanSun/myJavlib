@@ -34,8 +34,8 @@ public class KafkaConsumer {
     for (String s : genreList) {
       try {
         Genre genre = objectMapper.readValue(s, Genre.class);
-        genreService.insertGenre(genre);
-        logger.info("Genre:"+ genre.toString());
+        int res = genreService.insertGenre(genre);
+        logger.info("Genre: "+ genre.toString()+ ",success: "+ res);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }

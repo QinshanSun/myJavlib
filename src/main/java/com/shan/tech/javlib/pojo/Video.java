@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
 @Data
-public class Video {
+public class Video implements Serializable {
 
   @JsonIgnore
   private Long id;

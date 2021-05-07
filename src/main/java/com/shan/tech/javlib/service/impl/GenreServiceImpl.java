@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.service.impl;
 
+import com.shan.tech.javlib.configuration.RedisCacheable;
 import com.shan.tech.javlib.consts.ErrorMessage;
 import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.GenreMapper;
@@ -21,13 +22,22 @@ public class GenreServiceImpl implements GenreService {
   private HashOperations<String, String, Object> hashOperations;
 
   @Override
+  @RedisCacheable(type = Genre.class)
   public Genre findByLabel(String label) {
     return genreMapper.findByLabel(label).orElseThrow(() -> new NoFoundException(String.format(ErrorMessage.NO_FOUND, Genre.class.getName(), label)));
   }
 
   @Override
+  @RedisCacheable(type = Genre.class)
   public List<Genre> findGenresByName(String name) {
-    return genreMapper.findGenresByName(name);
+    List<Genre> genreList;
+    /*
+    List<Genre> redisGenreList = new ArrayList<>();
+    hashOperations.keys(RedisConst.HASH_ALL_GENRE).stream().filter(hashKey -> hashKey.contains(name)).forEach(hashKey -> redisGenreList.add((Genre) hashOperations.get(RedisConst.HASH_ALL_GENRE, hashKey)));
+    */
+    genreList = genreMapper.findGenresByName(name);
+    genreList.forEach(genre -> hashOperations.putIfAbsent(RedisConst.HASH_ALL_GENRE, genre.getName(), genre));
+    return genreList;
   }
 
   @Override
@@ -41,7 +51,7 @@ public class GenreServiceImpl implements GenreService {
     if (optionalGenre.isEmpty()) {
       int result = genreMapper.insertGenre(genre);
       if (result == 1) {
-        hashOperations.put(genre.getName(), RedisConst.HASH_ALL_GENRE, genre);
+        hashOperations.put(RedisConst.HASH_ALL_GENRE, genre.getName(), genre);
         return result;
       }
     }

@@ -32,9 +32,9 @@ public class GenreController {
   }
 
   @GetMapping
-  public ResponseEntity<Genre> getGenreByName(@RequestParam(name = "name") String name) {
+  public ResponseEntity<List<Genre>> getGenreByName(@RequestParam(name = "name") String name) {
     List<Genre> genreList = genreService.findGenresByName(name);
-    return new ResponseEntity(genreList, HttpStatus.OK);
+    return new ResponseEntity<>(genreList, HttpStatus.OK);
   }
 
 }

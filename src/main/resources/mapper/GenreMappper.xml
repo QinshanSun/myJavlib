@@ -19,9 +19,10 @@
         WHERE label = #{label}
     </select>
     <select id="findGenresByName" resultMap="BaseResultMap">
+        <bind name="patten" value="'%' + name + '%'"/>
         SELECT id, name, label
         FROM genre
-        WHERE name like #{name}
+        WHERE name like #{patten}
     </select>
     <select id="findAll" resultMap="BaseResultMap">
         SELECT id, name, label

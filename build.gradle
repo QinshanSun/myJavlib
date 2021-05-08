@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'junit:junit:4.13.1'
     implementation 'org.aspectj:aspectjweaver'
-
+    implementation 'com.alibaba:fastjson:1.2.46'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'

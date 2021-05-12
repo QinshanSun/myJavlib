@@ -5,6 +5,8 @@ import com.shan.tech.javlib.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/actor")
 public class ActorController {
@@ -16,9 +18,14 @@ public class ActorController {
     return  actorService.findById(id).orElseThrow();
   }
 
-  @GetMapping("label")
+  @GetMapping("/label")
   public Actor getActorByLabel(@RequestParam(name = "label") String label){
     return  actorService.findByLabel(label).orElseThrow();
+  }
+
+  @GetMapping("/name")
+  public List<Actor> getActorByName(@RequestParam(name = "name") String name) {
+    return actorService.findActorsByName(name);
   }
 
   @PostMapping

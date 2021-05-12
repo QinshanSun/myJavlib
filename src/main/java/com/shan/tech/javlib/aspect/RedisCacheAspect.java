@@ -11,8 +11,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
@@ -45,10 +43,6 @@ public class RedisCacheAspect {
   @Around("@annotation(redisCacheable)")
   public Object cache(ProceedingJoinPoint proceedingJoinPoint, RedisCacheable redisCacheable) throws Throwable {
     logger.info("cache is working");
-    //Get the class name, method name and parameters
-    String clazzName = proceedingJoinPoint.getTarget().getClass().getName();
-    String methodName = proceedingJoinPoint.getSignature().getName();
-
     Method targetMethod = getTargetMethod(proceedingJoinPoint);
     Class<?> modelType = targetMethod.getAnnotation(RedisCacheable.class).type();
     String hashName = modelType.getName();
@@ -63,24 +57,17 @@ public class RedisCacheAspect {
     // 判断缓存是否命中
     if (value != null) {
       // 缓存命中
-      if (logger.isDebugEnabled()) {
-        logger.debug("缓存命中, value = {}", value);
-      }
-
+      logger.info("缓存命中, value = {}", value);
       // 得到被代理方法的返回值类型
       Class<?> returnType = ((MethodSignature) proceedingJoinPoint.getSignature()).getReturnType();
 
       // 反序列化从缓存中拿到的json
       result = deserialize(value, returnType, modelType);
 
-      if (logger.isDebugEnabled()) {
-        logger.debug("反序列化结果 = {}", result);
-      }
+      logger.info("反序列化结果 = {}", result);
     } else {
       // 缓存未命中
-      if (logger.isDebugEnabled()) {
-        logger.debug("缓存未命中");
-      }
+      logger.info("缓存未命中");
 
       // 跳过缓存,到后端查询数据
       result = proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
@@ -121,16 +108,16 @@ public class RedisCacheAspect {
 
 
   /**
-   * 得到目标方法
+   * get target method
    *
-   * @param pjp
-   * @return 目标方法
+   * @param pjp ProceedingJoinPoint
+   * @return target method
    */
   private Method getTargetMethod(ProceedingJoinPoint pjp) throws NoSuchMethodException,
           SecurityException {
     Signature sig = pjp.getSignature();
     if (!(sig instanceof MethodSignature)) {
-      throw new IllegalArgumentException("该注解只能用于方法");
+      throw new IllegalArgumentException("The annotation can only apply to method.");
     }
     MethodSignature msig = (MethodSignature) sig;
     Object target = pjp.getTarget();
@@ -141,17 +128,16 @@ public class RedisCacheAspect {
    * generate key for cache by class name method name and arguments
    *
    * @param proceedingJoinPoint ProceedingJoinPoint proceedingJoinPoint
-   * @return 生成的key
+   * @return generated key
    */
   private String generateKey(ProceedingJoinPoint proceedingJoinPoint) {
 
-    // 获取类名
+    // class name
     String clazzName = proceedingJoinPoint.getTarget().getClass().getName();
-    // 获取方法名
+    // method name
     String methodName = proceedingJoinPoint.getSignature().getName();
-    // 方法参数
+    // arguments
     Object[] args = proceedingJoinPoint.getArgs();
-
     StringBuilder sb = new StringBuilder(clazzName);
     sb.append(Constants.DELIMITER);
     sb.append(methodName);
@@ -169,30 +155,30 @@ public class RedisCacheAspect {
   }
 
   /**
-   * 序列化数据
+   * serialized string
    *
    * @param source objects need to be serialized
-   * @return json字符串
+   * @return json string
    */
   private String serialize(Object source) {
     return JSON.toJSONString(source);
   }
 
   /**
-   * 反序列化
+   * deserialize
    *
    * @param source serialized object string
    * @param clazz class
    * @param modelType model type like user genre
-   * @return 反序列化的数据
+   * @return deserialize object
    */
   private Object deserialize(String source, Class<?> clazz, Class<?> modelType) {
-    // 判断是否为List
+    // check whether  string is serialized from List
     if (clazz.isAssignableFrom(List.class)) {
       return JSON.parseArray(source, modelType);
     }
 
-    // 正常反序列化
+    // deserialize from json
     return JSON.parseObject(source, clazz);
   }
 }

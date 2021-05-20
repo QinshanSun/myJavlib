@@ -50,7 +50,7 @@ public class KafkaConsumerConfig {
   public ConcurrentKafkaListenerContainerFactory<String, String> kafkaBatchListenerContainerFactory() {
     ConcurrentKafkaListenerContainerFactory<String, String>
             factory = new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(new DefaultKafkaConsumerFactory(batchConsumerProps()));
+    factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(batchConsumerProps()));
     factory.setConcurrency(KafkaConst.CURRENCY_NUM);
     factory.setBatchListener(true);
     return factory;

@@ -4,8 +4,10 @@ import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class ActorServiceImpl implements ActorService {
 
   private ActorMapper actorMapper;
+
+  private HashOperations<String, String, Object> hashOperations;
 
   @Override
   public Optional<Actor> findById(Long id) {
@@ -42,5 +46,10 @@ public class ActorServiceImpl implements ActorService {
   @Autowired
   public void setActorMapper(ActorMapper actorMapper) {
     this.actorMapper = actorMapper;
+  }
+
+  @Autowired
+  public void setHashOperations(HashOperations<String, String, Object> hashOperations) {
+    this.hashOperations = hashOperations;
   }
 }

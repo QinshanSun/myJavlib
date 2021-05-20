@@ -48,7 +48,7 @@ public class KafkaConsumer {
   }
 
 
-  @KafkaListener(id = "actor", clientIdPrefix = "genre-batch",topics = {KafkaConst.ACTOR_TOPIC}, containerFactory = "batchContainerFactory")
+  @KafkaListener(id = "actor", clientIdPrefix = "actor-batch",topics = {KafkaConst.ACTOR_TOPIC}, containerFactory = "batchContainerFactory")
   public void consumeActor(@Payload List<String> actorList) {
     logger.info("topic.quick.batch actor  receive : ");
     for (String s : actorList) {

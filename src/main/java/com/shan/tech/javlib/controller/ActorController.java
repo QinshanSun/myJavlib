@@ -1,10 +1,13 @@
 package com.shan.tech.javlib.controller;
 
+import com.google.common.base.Strings;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,20 +16,40 @@ public class ActorController {
 
   private ActorService actorService;
 
-  @GetMapping("/id")
-  public Actor getActor(@RequestParam(name = "Id") Long id){
-    return  actorService.findById(id).orElseThrow();
+  @GetMapping("/id={id}")
+  public Actor getActor(@PathVariable(name = "id") Long id) {
+    return actorService.findById(id).orElseThrow();
   }
 
-  @GetMapping("/label")
-  public Actor getActorByLabel(@RequestParam(name = "label") String label){
-    return  actorService.findByLabel(label).orElseThrow();
+  @GetMapping("/label={label}")
+  public Actor getActorByLabel(@PathVariable(name = "label") String label) {
+    return actorService.findByLabel(label).orElseThrow();
   }
 
-  @GetMapping("/name")
-  public List<Actor> getActorByName(@RequestParam(name = "name") String name) {
+  @GetMapping("/name={name}")
+  public List<Actor> getActorByName(@PathVariable(name = "name") String name) {
     return actorService.findActorsByName(name);
   }
+
+  @GetMapping
+  public List<Actor> getActors(@RequestParam(name = "id", required = false) Long id,
+                               @RequestParam(name = "label", required = false) String label,
+                               @RequestParam(name = "name", required = false) String name) {
+    List<Actor> actorList = new ArrayList<>();
+    if (id != null) {
+      Actor actor = actorService.findById(id).orElseThrow();
+      actorList.add(actor);
+      return actorList;
+    } else if (!Strings.isNullOrEmpty(label)) {
+      Actor actor = actorService.findByLabel(label).orElseThrow();
+      actorList.add(actor);
+      return actorList;
+    } else if (!Strings.isNullOrEmpty(name)) {
+      actorList = actorService.findActorsByName(name);
+    }
+    return actorList;
+  }
+
 
   @PostMapping
   public void insertActor(@RequestBody Actor actor){

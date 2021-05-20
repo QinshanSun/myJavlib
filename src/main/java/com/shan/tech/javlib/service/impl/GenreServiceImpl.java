@@ -36,7 +36,7 @@ public class GenreServiceImpl implements GenreService {
     hashOperations.keys(RedisConst.HASH_ALL_GENRE).stream().filter(hashKey -> hashKey.contains(name)).forEach(hashKey -> redisGenreList.add((Genre) hashOperations.get(RedisConst.HASH_ALL_GENRE, hashKey)));
     */
     genreList = genreMapper.findGenresByName(name);
-    genreList.forEach(genre -> hashOperations.putIfAbsent(RedisConst.HASH_ALL_GENRE, genre.getName(), genre));
+    genreList.forEach(genre -> hashOperations.put(RedisConst.HASH_ALL_GENRE, genre.getName(), genre));
     return genreList;
   }
 

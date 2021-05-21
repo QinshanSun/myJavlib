@@ -26,6 +26,10 @@
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
     </select>
+    <select id="findByPage" resultMap="BaseActorResultMap">
+        SELECT id, name, label, type, created_date, updated_date, used_name
+        FROM actor
+    </select>
     <select id="findActorsByName" resultMap="BaseActorResultMap">
         <bind name="patten" value="'%' + name + '%'"/>
         SELECT id, name, label, type, created_date, updated_date, used_name

@@ -1,10 +1,11 @@
 package com.shan.tech.javlib.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -50,6 +51,12 @@ public class ActorController {
     return actorList;
   }
 
+
+  @GetMapping("/findAllByPage")
+  public PageInfo<Actor> findAllByPage(@RequestParam(name = "num") int num,
+                                       @RequestParam(name = "size") int size) {
+    return actorService.findActorsByPage(num, size);
+  }
 
   @PostMapping
   public void insertActor(@RequestBody Actor actor){

@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.mapper;
 
+import com.github.pagehelper.Page;
 import com.shan.tech.javlib.pojo.Actor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,5 +20,7 @@ public interface ActorMapper {
     List<Actor> findActorsByName(@Param("name") String name);
 
     int insertActor(Actor actor);
+
+    Page<Actor> findByPage();
 
 }

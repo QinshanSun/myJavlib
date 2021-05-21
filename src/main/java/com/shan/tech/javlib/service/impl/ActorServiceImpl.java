@@ -1,5 +1,9 @@
 package com.shan.tech.javlib.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.service.ActorService;
@@ -20,6 +24,10 @@ public class ActorServiceImpl implements ActorService {
 
   @Override
   public Optional<Actor> findById(Long id) {
+    if (hashOperations.hasKey(RedisConst.HASH_ALL_ACTOR, id)) {
+      Actor actor = (Actor) hashOperations.get(RedisConst.HASH_ALL_ACTOR, id);
+      return Optional.ofNullable(actor);
+    }
     return actorMapper.findById(id);
   }
 
@@ -31,6 +39,13 @@ public class ActorServiceImpl implements ActorService {
   @Override
   public List<Actor> findAll() {
     return actorMapper.findAll();
+  }
+
+  @Override
+  public PageInfo<Actor> findActorsByPage(int pageNum, int pageSize) {
+    PageHelper.startPage(pageNum, pageSize);
+    Page<Actor> actorPage = actorMapper.findByPage();
+    return new PageInfo<>(actorPage);
   }
 
   @Override

@@ -173,7 +173,7 @@ public class RedisCacheAspect {
    * @return deserialize object
    */
   private Object deserialize(String source, Class<?> clazz, Class<?> modelType) {
-    // check whether  string is serialized from List
+    // check whether string is serialized from List
     if (clazz.isAssignableFrom(List.class)) {
       return JSON.parseArray(source, modelType);
     }

@@ -101,27 +101,28 @@
         WHERE label = #{label}
     </select>
     <select id="findVideosByTitle" resultMap="BaseVideoResultMap">
-        SELECT id,
-        title,
-        label,
-        number,
-        title,
-        year,
-        rated,
-        released,
-        runtime,
-        director,
-        plot,
-        poster,
-        rating,
-        meta_score,
-        votes,
-        producer,
-        publisher,
-        created_date,
-        updated_date
-        FROM video
-        WHERE title like #{title}
+        <bind name="patten" value="'%' + title + '%'"/>
+            SELECT id,
+            title,
+            label,
+            number,
+            title,
+            year,
+            rated,
+            released,
+            runtime,
+            director,
+            plot,
+            poster,
+            rating,
+            meta_score,
+            votes,
+            producer,
+            publisher,
+            created_date,
+            updated_date
+            FROM video
+            WHERE title like #{patten}
     </select>
     <select id="findAll" resultMap="BaseVideoResultMap">
         SELECT id,

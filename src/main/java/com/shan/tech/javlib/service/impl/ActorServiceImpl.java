@@ -9,6 +9,7 @@ import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class ActorServiceImpl implements ActorService {
   private ActorMapper actorMapper;
 
   private HashOperations<String, String, Object> hashOperations;
+
+  private ListOperations<String, String> listOperations;
 
   @Override
   public Optional<Actor> findById(Long id) {
@@ -55,7 +58,14 @@ public class ActorServiceImpl implements ActorService {
 
   @Override
   public int insertActor(Actor actor) {
-    return actorMapper.insertActor(actor);
+    int res = actorMapper.insertActor(actor);
+    listOperations.leftPush(RedisConst.VIDEO_SPIDER + RedisConst.COLON + RedisConst.SPIDER_START_URLS, RedisConst.DOMAIN + actor.getLabel());
+    return res;
+  }
+
+  @Override
+  public int updateActor(Actor actor) {
+    return actorMapper.updateActor(actor);
   }
 
   @Autowired

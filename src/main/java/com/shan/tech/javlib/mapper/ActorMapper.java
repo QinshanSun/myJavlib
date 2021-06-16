@@ -21,6 +21,8 @@ public interface ActorMapper {
 
     int insertActor(Actor actor);
 
+    int updateActor(Actor actor);
+
     Page<Actor> findByPage();
 
 }

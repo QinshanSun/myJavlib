@@ -40,4 +40,9 @@
         INSERT INTO actor (name, label, type, created_date, updated_date, used_name)
         VALUES (#{name}, #{label}, #{type}, #{createdDate}, #{updatedDate}, #{usedName})
     </insert>
+    <update id="updateActor">
+        UPDATE actor
+        SET name= #{name}, label = #{label}, type = #{type}, created_date = #{createdDate}, updated_date = #{updatedDate, used_name = #{usedName}
+        WHERE id = #{id}
+    </update>
 </mapper>

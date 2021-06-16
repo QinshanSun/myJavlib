@@ -19,4 +19,6 @@ public interface ActorService {
   List<Actor> findActorsByName(String name);
 
   int insertActor(Actor actor);
+
+  int updateActor(Actor actor);
 }

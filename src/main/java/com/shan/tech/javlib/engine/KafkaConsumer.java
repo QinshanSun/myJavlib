@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shan.tech.javlib.consts.KafkaConst;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.pojo.Genre;
+import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.ActorService;
 import com.shan.tech.javlib.service.GenreService;
+import com.shan.tech.javlib.service.VideoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KafkaConsumer {
@@ -27,6 +30,8 @@ public class KafkaConsumer {
   private GenreService genreService;
 
   private ActorService actorService;
+
+  private VideoService videoService;
 
   @KafkaListener(topics = "users.topic", groupId = "group_id")
   public void consume(String message) {
@@ -54,10 +59,32 @@ public class KafkaConsumer {
     for (String s : actorList) {
       try {
         Actor actor = objectMapper.readValue(s, Actor.class);
-        actor.setUpdatedDate(new Date());
-        actor.setCreatedDate(new Date());
-        int res = actorService.insertActor(actor);
+        int res;
+        Optional<Actor> actorOptional = actorService.findByLabel(actor.getLabel());
+        if (actorOptional.isPresent()) {
+          actor.setId(actorOptional.get().getId());
+          actor.setUpdatedDate(new Date());
+          res = actorService.updateActor(actor);
+        } else {
+          actor.setCreatedDate(new Date());
+          res = actorService.insertActor(actor);
+        }
         logger.info("Actor: "+ actor + ",success: "+ res);
+      } catch (JsonProcessingException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  @KafkaListener(id = "video", clientIdPrefix = "video-batch", topics = {KafkaConst.VIDEO_TOPIC}, containerFactory = "batchContainerFactory")
+  public void consumeVideo(@Payload List<String> videoList) {
+    logger.info("topic.quick.batch actor  receive : ");
+    for (String s : videoList) {
+      try {
+        Video video = objectMapper.readValue(s, Video.class);
+        video.setCreatedDate(new Date());
+        int res = videoService.insertVideo(video);
+        logger.info("Actor: " + video + ",success: " + res);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }

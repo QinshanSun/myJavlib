@@ -23,8 +23,8 @@ public class ActorController {
   }
 
   @GetMapping("/label={label}")
-  public Actor getActorByLabel(@PathVariable(name = "label") String label) {
-    return actorService.findByLabel(label).orElseThrow();
+  public List<Actor> getActorByLabel(@PathVariable(name = "label") String label) {
+    return actorService.findByLabel(label);
   }
 
   @GetMapping("/name={name}")
@@ -42,8 +42,8 @@ public class ActorController {
       actorList.add(actor);
       return actorList;
     } else if (!Strings.isNullOrEmpty(label)) {
-      Actor actor = actorService.findByLabel(label).orElseThrow();
-      actorList.add(actor);
+      List<Actor> actor = actorService.findByLabel(label);
+      actorList.addAll(actor);
       return actorList;
     } else if (!Strings.isNullOrEmpty(name)) {
       actorList = actorService.findActorsByName(name);

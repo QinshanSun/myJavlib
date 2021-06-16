@@ -14,9 +14,12 @@ public class RedisConst {
 
   public final static String VIDEO_SPIDER = "video_spider";
 
-  public final static String DOMAIN = "http://www.{domain}.com/cn";
+  public final static String ACTOR_SPIDER = "actor_spider";
 
-  public final static String COLON = ":";
+  public final static String DOMAIN = "spider_domain";
+
+  public final static String ACTOR_PREFIX = "/star_list.php?prefix=";
+
 
   public final static String ACTOR = "ACTOR";
 

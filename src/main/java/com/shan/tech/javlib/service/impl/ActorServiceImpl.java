@@ -7,12 +7,13 @@ import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.service.ActorService;
+import com.shan.tech.javlib.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ public class ActorServiceImpl implements ActorService {
 
   private ListOperations<String, String> listOperations;
 
+  private ValueOperations<String, String> valueOperations;
+
   @Override
   public Optional<Actor> findById(Long id) {
     if (hashOperations.hasKey(RedisConst.HASH_ALL_ACTOR, id)) {
@@ -35,7 +38,7 @@ public class ActorServiceImpl implements ActorService {
   }
 
   @Override
-  public Optional<Actor> findByLabel(String label) {
+  public List<Actor> findByLabel(String label) {
     return actorMapper.findByLabel(label);
   }
 
@@ -59,7 +62,8 @@ public class ActorServiceImpl implements ActorService {
   @Override
   public int insertActor(Actor actor) {
     int res = actorMapper.insertActor(actor);
-    listOperations.leftPush(RedisConst.VIDEO_SPIDER + RedisConst.COLON + RedisConst.SPIDER_START_URLS, RedisConst.DOMAIN + actor.getLabel());
+    String URL = RedisUtils.getDomain(valueOperations) + actor.getLabel();
+    RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL);
     return res;
   }
 
@@ -76,5 +80,15 @@ public class ActorServiceImpl implements ActorService {
   @Autowired
   public void setHashOperations(HashOperations<String, String, Object> hashOperations) {
     this.hashOperations = hashOperations;
+  }
+
+  @Autowired
+  public void setListOperations(ListOperations<String, String> listOperations){
+    this.listOperations = listOperations;
+  }
+
+  @Autowired
+  public void setValueOperations(ValueOperations<String, String> valueOperations) {
+    this.valueOperations = valueOperations;
   }
 }

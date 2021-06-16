@@ -13,7 +13,7 @@ public interface ActorMapper {
 
     Optional<Actor> findById(Long id);
 
-    Optional<Actor> findByLabel(String label);
+    List<Actor> findByLabel(String label);
 
     List<Actor> findAll();
 

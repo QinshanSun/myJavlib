@@ -42,7 +42,7 @@ public class RedisConfig {
   }
 
   @Bean
-  public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
+  public ListOperations<String, String> listOperations(RedisTemplate<String, String> redisTemplate) {
     return redisTemplate.opsForList();
   }
 

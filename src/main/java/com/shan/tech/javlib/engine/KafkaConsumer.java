@@ -59,14 +59,22 @@ public class KafkaConsumer {
     for (String s : actorList) {
       try {
         Actor actor = objectMapper.readValue(s, Actor.class);
-        int res;
-        Optional<Actor> actorOptional = actorService.findByLabel(actor.getLabel());
-        if (actorOptional.isPresent()) {
-          actor.setId(actorOptional.get().getId());
-          actor.setUpdatedDate(new Date());
-          res = actorService.updateActor(actor);
+        int res = 0;
+        List<Actor> actors = actorService.findByLabel(actor.getLabel());
+        if (actors.size() > 0) {
+          if (actor.getCreatedDate() == null){
+            actor.setCreatedDate(new Date());
+          }
+          for (Actor actor1: actors){
+            if (actor1.getName().equals(actor.getName())){
+              actor.setId(actor1.getId());
+              actor.setUpdatedDate(new Date());
+              res = actorService.updateActor(actor);
+            }
+          }
         } else {
           actor.setCreatedDate(new Date());
+          actor.setUpdatedDate(new Date());
           res = actorService.insertActor(actor);
         }
         logger.info("Actor: "+ actor + ",success: "+ res);

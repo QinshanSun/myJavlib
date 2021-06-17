@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,8 @@ public class RedisController {
     @Autowired
     private ValueOperations<String, String> valueOperations;
 
-    @GetMapping("/actor")
-    public void updateActor(@RequestParam(name = "type") String type){
+    @PostMapping("/actor")
+    public void updateActor(@RequestParam(name = "type", required = false) String type) {
        String URL =  RedisUtils.getDomain(valueOperations);
        if (StringUtils.hasText(type)){
            RedisUtils.pushSpiderStartURL(listOperations, RedisConst.ACTOR_SPIDER,URL + RedisConst.ACTOR_PREFIX + type);
@@ -37,7 +38,7 @@ public class RedisController {
        }
     }
 
-    @GetMapping("/domain")
+    @PostMapping("/domain")
     public void updateDomain(@RequestParam(name = "domain") String domain){
         valueOperations.set(RedisConst.DOMAIN, domain);
     }

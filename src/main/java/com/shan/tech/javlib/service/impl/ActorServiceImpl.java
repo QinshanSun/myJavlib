@@ -3,6 +3,7 @@ package com.shan.tech.javlib.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.pojo.Actor;
@@ -62,8 +63,11 @@ public class ActorServiceImpl implements ActorService {
   @Override
   public int insertActor(Actor actor) {
     int res = actorMapper.insertActor(actor);
-    String URL = RedisUtils.getDomain(valueOperations) + actor.getLabel();
-    RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL);
+    // put the actor url for scrapy spider to use
+    if (res > 0){
+      String URL = RedisUtils.getDomain(valueOperations) + Constants.SLASH + actor.getLabel();
+      RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL);
+    }
     return res;
   }
 

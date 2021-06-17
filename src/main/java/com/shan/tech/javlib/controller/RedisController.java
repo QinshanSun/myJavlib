@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.controller;
 
+import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,16 @@ public class RedisController {
        }
     }
 
+
     @PostMapping("/domain")
     public void updateDomain(@RequestParam(name = "domain") String domain){
         valueOperations.set(RedisConst.DOMAIN, domain);
+    }
+
+    @PostMapping("/genre")
+    public void updateGenre() {
+        String URL = RedisUtils.getDomain(valueOperations);
+        RedisUtils.pushSpiderStartURL(listOperations, RedisConst.GENRE_SPIDER, URL + Constants.SLASH + RedisConst.GENRE_START_URL);
     }
 
 }

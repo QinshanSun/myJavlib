@@ -16,9 +16,13 @@ public class RedisConst {
 
   public final static String ACTOR_SPIDER = "actor_spider";
 
+  public final static String GENRE_SPIDER = "genre_spider";
+
   public final static String DOMAIN = "spider_domain";
 
   public final static String ACTOR_PREFIX = "/star_list.php?prefix=";
+
+  public final static String GENRE_START_URL = "genres.php";
 
 
   public final static String ACTOR = "ACTOR";

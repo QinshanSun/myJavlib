@@ -2,18 +2,21 @@ package com.shan.tech.javlib.controller;
 
 import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
+import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.service.ActorService;
 import com.shan.tech.javlib.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
@@ -29,12 +32,18 @@ public class RedisController {
     @Autowired
     private ValueOperations<String, String> valueOperations;
 
+    //domain URL
+    private static String URL;
+
+    @Autowired
+    private ActorService actorService;
+
     @PostMapping("/actor")
     public void updateActor(@RequestParam(name = "type", required = false) String type) {
-       String URL =  RedisUtils.getDomain(valueOperations);
        if (StringUtils.hasText(type)){
            RedisUtils.pushSpiderStartURL(listOperations, RedisConst.ACTOR_SPIDER,URL + RedisConst.ACTOR_PREFIX + type);
        }else {
+           //update actors from A to Z
            Stream.iterate('A', i -> ++i).limit(26).forEach(a->RedisUtils.pushSpiderStartURL(listOperations, RedisConst.ACTOR_SPIDER,URL + RedisConst.ACTOR_PREFIX + a.toString()));
        }
     }
@@ -47,8 +56,27 @@ public class RedisController {
 
     @PostMapping("/genre")
     public void updateGenre() {
-        String URL = RedisUtils.getDomain(valueOperations);
         RedisUtils.pushSpiderStartURL(listOperations, RedisConst.GENRE_SPIDER, URL + Constants.SLASH + RedisConst.GENRE_START_URL);
     }
 
+    @PostMapping("/video")
+    public void updateVideo(@RequestParam(name = "label", required = false) String label) {
+        if (StringUtils.hasText(label)) {
+            RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL + Constants.SLASH + label);
+        } else {
+            // todo need to find another smart way to update the video
+            List<Actor> actorList = actorService.findAll();
+            actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL + Constants.SLASH + request));
+        }
+    }
+
+    /**
+     * initial the properties when initial the (like: URL)
+     */
+    @PostConstruct
+    public void postConstruct(){
+        if (!StringUtils.hasLength(URL)){
+            URL = RedisUtils.getDomain(valueOperations);
+        }
+    }
 }

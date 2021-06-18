@@ -52,7 +52,8 @@ public class GenreServiceImpl implements GenreService {
     if (optionalGenre.isEmpty()) {
       int result = genreMapper.insertGenre(genre);
       if (result == 1) {
-        hashOperations.put(RedisConst.HASH_ALL_GENRE, genre.getName(), genre);
+        //delete genre when insert genre
+        hashOperations.delete(RedisConst.HASH_ALL_GENRE, genre.getName());
         return result;
       }
     }

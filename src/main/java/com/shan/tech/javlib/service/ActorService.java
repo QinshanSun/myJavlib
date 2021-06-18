@@ -3,6 +3,7 @@ package com.shan.tech.javlib.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.pojo.Video;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,6 @@ public interface ActorService {
   int insertActor(Actor actor);
 
   int updateActor(Actor actor);
+
+  int insertActorsForVideo(List<Actor> actorList, Video video);
 }

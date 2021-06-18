@@ -2,6 +2,7 @@ package com.shan.tech.javlib.mapper;
 
 import com.github.pagehelper.Page;
 import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.pojo.Video;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,5 @@ public interface ActorMapper {
 
     Page<Actor> findByPage();
 
+    int insertActorsForVideo(List<Actor> actorList, Video video);
 }

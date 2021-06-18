@@ -6,6 +6,7 @@ import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.GenreMapper;
 import com.shan.tech.javlib.model.exception.NoFoundException;
 import com.shan.tech.javlib.pojo.Genre;
+import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -61,6 +62,11 @@ public class GenreServiceImpl implements GenreService {
   @Override
   public int insertGenreList(List<Genre> genreList) {
     return genreMapper.insertGenreList(genreList);
+  }
+
+  @Override
+  public int insertGenresForVideo(List<Genre> genreList, Video video) {
+    return genreMapper.insertGenresForVideo(genreList, video);
   }
 
   @Autowired

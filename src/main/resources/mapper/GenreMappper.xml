@@ -37,4 +37,11 @@
             (#{name}, #{label})
         </foreach>
     </insert>
+    <insert id="insertGenresForVideo">
+        INSERT INTO genre_video (genre_id, video_id)
+        VALUES
+        <foreach collection="list" item="genre" separator=",">
+            (#{genre.id}, #{video.id})
+        </foreach>
+    </insert>
 </mapper>

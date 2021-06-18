@@ -1,6 +1,7 @@
 package com.shan.tech.javlib.mapper;
 
 import com.shan.tech.javlib.pojo.Genre;
+import com.shan.tech.javlib.pojo.Video;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface GenreMapper {
   int insertGenre(Genre genre);
 
   int insertGenreList(List<Genre> genreList);
+
+  int insertGenresForVideo(List<Genre> genreList, Video video);
 }

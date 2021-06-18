@@ -7,6 +7,7 @@ import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.ActorService;
 import com.shan.tech.javlib.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,11 @@ public class ActorServiceImpl implements ActorService {
     return actorMapper.updateActor(actor);
   }
 
+  @Override
+  public int insertActorsForVideo(List<Actor> actorList, Video video) {
+    return actorMapper.insertActorsForVideo(actorList, video);
+  }
+  
   @Autowired
   public void setActorMapper(ActorMapper actorMapper) {
     this.actorMapper = actorMapper;

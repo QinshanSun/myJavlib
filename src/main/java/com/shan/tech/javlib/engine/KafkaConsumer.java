@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class KafkaConsumer {
@@ -62,19 +61,16 @@ public class KafkaConsumer {
         int res = 0;
         List<Actor> actors = actorService.findByLabel(actor.getLabel());
         if (actors.size() > 0) {
-          if (actor.getCreatedDate() == null){
-            actor.setCreatedDate(new Date());
-          }
-          for (Actor actor1: actors){
-            if (actor1.getName().equals(actor.getName())){
-              actor.setId(actor1.getId());
-              actor.setUpdatedDate(new Date());
+          for (Actor existActor: actors){
+            if (existActor.getName().equals(actor.getName()) ){
+              actor.setId(existActor.getId());
+              actor.setCreatedDate(existActor.getCreatedDate());
               res = actorService.updateActor(actor);
             }
           }
-        } else {
+        }
+        if (res == 0) {
           actor.setCreatedDate(new Date());
-          actor.setUpdatedDate(new Date());
           res = actorService.insertActor(actor);
         }
         logger.info("Actor: "+ actor + ",success: "+ res);
@@ -86,13 +82,13 @@ public class KafkaConsumer {
 
   @KafkaListener(id = "video", clientIdPrefix = "video-batch", topics = {KafkaConst.VIDEO_TOPIC}, containerFactory = "batchContainerFactory")
   public void consumeVideo(@Payload List<String> videoList) {
-    logger.info("topic.quick.batch actor  receive : ");
+    logger.info("topic.quick.batch video  receive : ");
     for (String s : videoList) {
       try {
         Video video = objectMapper.readValue(s, Video.class);
         video.setCreatedDate(new Date());
         int res = videoService.insertVideo(video);
-        logger.info("Actor: " + video + ",success: " + res);
+        logger.info("Video: " + video + ", success: " + res);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
@@ -108,5 +104,10 @@ public class KafkaConsumer {
   @Autowired
   public void setActorService(ActorService actorService) {
     this.actorService = actorService;
+  }
+
+  @Autowired
+  public void setVideoService(VideoService videoService) {
+    this.videoService = videoService;
   }
 }

@@ -4,6 +4,7 @@ import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.util.StringUtils;
 
 
 public class RedisUtils {
@@ -14,6 +15,13 @@ public class RedisUtils {
 
     public static String getDomain(ValueOperations<String, String> valueOperations) {
         String domain = valueOperations.get(RedisConst.DOMAIN);
-        return "http://www." + domain + ".com/cn";
+        return RedisConst.URL_START + domain + RedisConst.URL_END;
+    }
+
+    public static String buildVideoURL(String label){
+        final String[] video_url_parts = StringUtils.split(label,"?");
+        assert video_url_parts != null;
+        assert video_url_parts.length == 2;
+        return video_url_parts[0] + RedisConst.VIDEO_MODE + video_url_parts[1];
     }
 }

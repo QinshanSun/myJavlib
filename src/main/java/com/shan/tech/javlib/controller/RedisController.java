@@ -62,11 +62,11 @@ public class RedisController {
     @PostMapping("/video")
     public void updateVideo(@RequestParam(name = "label", required = false) String label) {
         if (StringUtils.hasText(label)) {
-            RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL + Constants.SLASH + label);
+            RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL + Constants.SLASH + RedisUtils.buildVideoURL(label));
         } else {
             // todo need to find another smart way to update the video
             List<Actor> actorList = actorService.findAll();
-            actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL + Constants.SLASH + request));
+            actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL + Constants.SLASH + RedisUtils.buildVideoURL(label)));
         }
     }
 

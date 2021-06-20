@@ -24,6 +24,11 @@ public class RedisConst {
 
   public final static String GENRE_START_URL = "genres.php";
 
+  public final static String VIDEO_MODE = "&mode=2&";
+
+  public final static String URL_START = "http://www.";
+
+  public  final static  String URL_END = ".com/cn";
 
   public final static String ACTOR = "ACTOR";
 

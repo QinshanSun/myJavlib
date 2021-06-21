@@ -18,10 +18,10 @@ public class RedisUtils {
         return RedisConst.URL_START + domain + RedisConst.URL_END;
     }
 
-    public static String buildVideoURL(String label){
-        final String[] video_url_parts = StringUtils.split(label,"?");
+    public static String buildVideoURLWithMode(String label){
+        final String[] video_url_parts = StringUtils.split(label, RedisConst.VIDEO_URL_DELIMITER);
         assert video_url_parts != null;
         assert video_url_parts.length == 2;
-        return video_url_parts[0] + RedisConst.VIDEO_MODE + video_url_parts[1];
+        return video_url_parts[0] + RedisConst.VIDEO_URL_DELIMITER + RedisConst.VIDEO_MODE + video_url_parts[1];
     }
 }

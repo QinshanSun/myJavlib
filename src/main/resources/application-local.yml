@@ -9,7 +9,8 @@ spring:
     database: 0
     host: localhost
     port: 6379
-
+  kafka:
+    bootstrap-servers: localhost:9092
 
 mybatis:
   type-aliases-package: com.shan.tech.javlib.pojo

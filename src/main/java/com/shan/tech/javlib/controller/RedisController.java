@@ -52,6 +52,8 @@ public class RedisController {
     @PostMapping("/domain")
     public void updateDomain(@RequestParam(name = "domain") String domain){
         valueOperations.set(RedisConst.DOMAIN, domain);
+        // update URL by domain since it had been changed.
+        URL = RedisUtils.getDomain(valueOperations);
     }
 
     @PostMapping("/genre")

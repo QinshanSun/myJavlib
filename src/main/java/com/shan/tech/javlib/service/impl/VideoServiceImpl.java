@@ -12,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -45,7 +44,10 @@ public class VideoServiceImpl implements VideoService {
   }
 
   @Override
+  @Transactional
   public int insertVideo(Video video) {
+    if (video == null)
+      return 0;
     int res =  videoMapper.insertVideo(video);
     stringSetOperations.add(RedisConst.SET_ALL_VIDEO, video.getLabel());
     return res;
@@ -54,7 +56,9 @@ public class VideoServiceImpl implements VideoService {
   @Override
   @Transactional
   public int insertVideoList(List<Video> videoList) {
-    int res =  videoMapper.insertVideoList(videoList);
+    if (CollectionUtils.isEmpty(videoList))
+      return 0;
+    int res = videoMapper.insertVideoList(videoList);
     videoList.forEach(video -> stringSetOperations.add(RedisConst.SET_ALL_VIDEO, video.getLabel()));
     return res;
   }

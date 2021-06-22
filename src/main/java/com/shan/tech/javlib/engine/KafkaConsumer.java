@@ -43,14 +43,14 @@ public class KafkaConsumer {
     logger.info(String.format("#### -> Consumed message -> %s", message));
   }
 
-  @KafkaListener(id = "genre", clientIdPrefix = "genre-batch",topics = {KafkaConst.GENRE_TOPIC}, containerFactory = "batchContainerFactory")
+  @KafkaListener(id = "genre", clientIdPrefix = "genre-batch", topics = {KafkaConst.GENRE_TOPIC}, containerFactory = "batchContainerFactory")
   public void consumeGenre(@Payload List<String> genreList) {
     logger.info("topic.quick.batch  receive : ");
     for (String s : genreList) {
       try {
         Genre genre = objectMapper.readValue(s, Genre.class);
         int res = genreService.insertGenre(genre);
-        logger.info("Genre: "+ genre.toString()+ ",success: "+ res);
+        logger.info("Genre: " + genre.toString() + ",success: " + res);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
@@ -58,7 +58,7 @@ public class KafkaConsumer {
   }
 
 
-  @KafkaListener(id = "actor", clientIdPrefix = "actor-batch",topics = {KafkaConst.ACTOR_TOPIC}, containerFactory = "batchContainerFactory")
+  @KafkaListener(id = "actor", clientIdPrefix = "actor-batch", topics = {KafkaConst.ACTOR_TOPIC}, containerFactory = "batchContainerFactory")
   public void consumeActor(@Payload List<String> actorList) {
     logger.info("topic.quick.batch actor  receive : ");
     for (String s : actorList) {
@@ -67,8 +67,8 @@ public class KafkaConsumer {
         int res = 0;
         List<Actor> actors = actorService.findByLabel(actor.getLabel());
         if (actors.size() > 0) {
-          for (Actor existActor: actors){
-            if (existActor.getName().equals(actor.getName()) ){
+          for (Actor existActor : actors) {
+            if (existActor.getName().equals(actor.getName())) {
               actor.setId(existActor.getId());
               actor.setCreatedDate(existActor.getCreatedDate());
               res = actorService.updateActor(actor);
@@ -79,7 +79,7 @@ public class KafkaConsumer {
           actor.setCreatedDate(new Date());
           res = actorService.insertActor(actor);
         }
-        logger.info("Actor: "+ actor + ",success: "+ res);
+        logger.info("Actor: " + actor + ",success: " + res);
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
@@ -89,20 +89,20 @@ public class KafkaConsumer {
   @KafkaListener(id = "video", clientIdPrefix = "video-batch", topics = {KafkaConst.VIDEO_TOPIC}, containerFactory = "batchContainerFactory")
   public void consumeVideo(@Payload List<String> videoList) {
     logger.info("topic.quick.batch video  receive : ");
-    List<Video> videosList = new ArrayList<>();
+    List<Video> videos = new ArrayList<>();
     for (String s : videoList) {
       try {
         Video video = objectMapper.readValue(s, Video.class);
-        if (!stringSetOperations.isMember(RedisConst.SET_ALL_VIDEO, video.getLabel())){
-            video.setCreatedDate(new Date());
-            videosList.add(video);
+        if (!stringSetOperations.isMember(RedisConst.SET_ALL_VIDEO, video.getLabel())) {
+          video.setCreatedDate(new Date());
+          videos.add(video);
         }
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
     }
-    int res = videoService.insertVideoList(videosList);
-    logger.info("Video: " + videosList + ", success: " + res);
+    int res = videoService.insertVideoList(videos);
+    logger.info("Video: " + videos + ", success: " + res);
   }
 
 

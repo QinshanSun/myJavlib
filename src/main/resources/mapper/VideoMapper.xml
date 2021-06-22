@@ -187,11 +187,10 @@
         #{metaScore}, #{votes}, #{producer}, #{publisher}, #{createdDate}, #{updatedDate}, #{label}, #{number})
     </insert>
     <insert id="insertVideoList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO video (title, year, rated, released, runtime, director, plot, poster, rating, meta_score, votes,
-        producer, publisher, created_date, updated_date, label, number)
+        INSERT INTO video (title, year, rated, released, runtime, director, plot, poster, rating, meta_score, votes, producer, publisher, created_date, updated_date, label, number)
         VALUES
         <foreach collection="list" item="video" separator=",">
-            (#{video.title},#{video.year}, #{video.rated}, #{video.released}, #{video.runTime}, #{video.director}, #{video.plot}, #{video.poster}, #{video.rating},
+            (#{video.title}, #{video.year}, #{video.rated}, #{video.released}, #{video.runTime}, #{video.director}, #{video.plot}, #{video.poster}, #{video.rating},
             #{video.metaScore}, #{video.votes}, #{video.producer}, #{video.publisher}, #{video.createdDate}, #{video.updatedDate}, #{video.label}, #{video.number})
         </foreach>
     </insert>

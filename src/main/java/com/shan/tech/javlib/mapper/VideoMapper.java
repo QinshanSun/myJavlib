@@ -23,6 +23,8 @@ public interface VideoMapper {
 
   int insertVideo(Video video);
 
+  int insertVideoList(List<Video> videoList);
+
   int insertGenresForVideo(List<Genre> genreList, Video video);
 
   int insertActorsForVideo(List<Actor> actorList, Video video);

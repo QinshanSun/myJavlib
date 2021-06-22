@@ -186,6 +186,15 @@
         VALUES (#{title},#{year}, #{rated}, #{released}, #{runTime}, #{director}, #{plot}, #{poster}, #{rating},
         #{metaScore}, #{votes}, #{producer}, #{publisher}, #{createdDate}, #{updatedDate}, #{label}, #{number})
     </insert>
+    <insert id="insertVideoList" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO video (title, year, rated, released, runtime, director, plot, poster, rating, meta_score, votes,
+        producer, publisher, created_date, updated_date, label, number)
+        VALUES
+        <foreach collection="list" item="video" separator=",">
+            (#{title},#{year}, #{rated}, #{released}, #{runTime}, #{director}, #{plot}, #{poster}, #{rating},
+            #{metaScore}, #{votes}, #{producer}, #{publisher}, #{createdDate}, #{updatedDate}, #{label}, #{number})
+        </foreach>
+    </insert>
     <insert id="insertGenresForVideo">
         INSERT INTO genre_video (genre_id, video_id)
         VALUES

@@ -43,6 +43,12 @@ public class VideoServiceImpl implements VideoService {
   }
 
   @Override
+  public int insertVideoList(List<Video> videoList) {
+    return videoMapper.insertVideoList(videoList);
+  }
+
+
+  @Override
   public int insertGenresForVideo(List<Genre> genreList, Video video) {
     return videoMapper.insertGenresForVideo(genreList, video);
   }

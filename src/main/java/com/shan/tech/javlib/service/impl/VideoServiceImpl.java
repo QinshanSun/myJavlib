@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.service.impl;
 
+import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.mapper.GenreMapper;
 import com.shan.tech.javlib.mapper.VideoMapper;
@@ -8,10 +9,13 @@ import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -21,6 +25,9 @@ public class VideoServiceImpl implements VideoService {
   private ActorMapper actorMapper;
 
   private GenreMapper genreMapper;
+
+  @Autowired
+  private SetOperations<String, String> stringSetOperations;
 
   @Override
   public Optional<Video> findById(Long id) {
@@ -39,12 +46,17 @@ public class VideoServiceImpl implements VideoService {
 
   @Override
   public int insertVideo(Video video) {
-    return videoMapper.insertVideo(video);
+    int res =  videoMapper.insertVideo(video);
+    stringSetOperations.add(RedisConst.SET_ALL_VIDEO, video.getLabel());
+    return res;
   }
 
   @Override
+  @Transactional
   public int insertVideoList(List<Video> videoList) {
-    return videoMapper.insertVideoList(videoList);
+    int res =  videoMapper.insertVideoList(videoList);
+    videoList.forEach(video -> stringSetOperations.add(RedisConst.SET_ALL_VIDEO, video.getLabel()));
+    return res;
   }
 
 

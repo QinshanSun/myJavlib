@@ -191,8 +191,8 @@
         producer, publisher, created_date, updated_date, label, number)
         VALUES
         <foreach collection="list" item="video" separator=",">
-            (#{title},#{year}, #{rated}, #{released}, #{runTime}, #{director}, #{plot}, #{poster}, #{rating},
-            #{metaScore}, #{votes}, #{producer}, #{publisher}, #{createdDate}, #{updatedDate}, #{label}, #{number})
+            (#{video.title},#{video.year}, #{video.rated}, #{video.released}, #{video.runTime}, #{video.director}, #{video.plot}, #{video.poster}, #{video.rating},
+            #{video.metaScore}, #{video.votes}, #{video.producer}, #{video.publisher}, #{video.createdDate}, #{video.updatedDate}, #{video.label}, #{video.number})
         </foreach>
     </insert>
     <insert id="insertGenresForVideo">

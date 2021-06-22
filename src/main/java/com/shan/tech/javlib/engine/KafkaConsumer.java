@@ -3,6 +3,7 @@ package com.shan.tech.javlib.engine;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shan.tech.javlib.consts.KafkaConst;
+import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.pojo.Video;
@@ -12,10 +13,12 @@ import com.shan.tech.javlib.service.VideoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +34,9 @@ public class KafkaConsumer {
   private ActorService actorService;
 
   private VideoService videoService;
+
+  @Autowired
+  private SetOperations<String, String> stringSetOperations;
 
   @KafkaListener(topics = "users.topic", groupId = "group_id")
   public void consume(String message) {
@@ -83,16 +89,20 @@ public class KafkaConsumer {
   @KafkaListener(id = "video", clientIdPrefix = "video-batch", topics = {KafkaConst.VIDEO_TOPIC}, containerFactory = "batchContainerFactory")
   public void consumeVideo(@Payload List<String> videoList) {
     logger.info("topic.quick.batch video  receive : ");
+    List<Video> videosList = new ArrayList<>();
     for (String s : videoList) {
       try {
         Video video = objectMapper.readValue(s, Video.class);
-        video.setCreatedDate(new Date());
-        int res = videoService.insertVideo(video);
-        logger.info("Video: " + video + ", success: " + res);
+        if (!stringSetOperations.isMember(RedisConst.SET_ALL_VIDEO, video.getLabel())){
+            video.setCreatedDate(new Date());
+            videosList.add(video);
+        }
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
     }
+    int res = videoService.insertVideoList(videosList);
+    logger.info("Video: " + videosList + ", success: " + res);
   }
 
 

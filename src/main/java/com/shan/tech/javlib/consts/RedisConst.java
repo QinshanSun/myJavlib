@@ -8,6 +8,7 @@ public class RedisConst {
 
   public final static String HASH_ALL_ACTOR = "HASH_ALL_ACTOR";
 
+  public final static String SET_ALL_VIDEO = "SET_ALL_VIDEO";
 
   //spiders related constant
   public final static String SPIDER_START_URLS = "start_urls";

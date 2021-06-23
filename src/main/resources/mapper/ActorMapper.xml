@@ -26,6 +26,11 @@
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
     </select>
+    <select id="findOutOfDateActors" resultMap="BaseActorResultMap">
+        SELECT id, name, label, type, created_date, updated_date, used_name
+        FROM actor
+        WHERE updated_date IS NULL || DATEDIFF(SYSDATE(),updated_date) >10 LIMIT 100;
+    </select>
     <select id="findByPage" resultMap="BaseActorResultMap">
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
@@ -44,6 +49,13 @@
         UPDATE actor
         SET name= #{name}, label = #{label}, type = #{type}, created_date = #{createdDate}, updated_date = #{updatedDate}, used_name = #{usedName}
         WHERE id = #{id}
+    </update>
+    <update id="updateActors"  parameterType="java.util.List">
+        UPDATE actor SET updated_date = SYSDATE() WHERE id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
     </update>
     <insert id="insertActorsForVideo">
         INSERT INTO genre_video (actor_id, video_id)

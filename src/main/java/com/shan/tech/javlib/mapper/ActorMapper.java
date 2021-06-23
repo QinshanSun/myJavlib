@@ -20,9 +20,13 @@ public interface ActorMapper {
 
     List<Actor> findActorsByName(@Param("name") String name);
 
+    List<Actor> findOutOfDateActors();
+
     int insertActor(Actor actor);
 
     int updateActor(Actor actor);
+
+    int updateActors(List<Actor> actorList);
 
     Page<Actor> findByPage();
 

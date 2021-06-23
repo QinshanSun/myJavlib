@@ -15,9 +15,11 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ActorServiceImpl implements ActorService {
@@ -61,6 +63,16 @@ public class ActorServiceImpl implements ActorService {
     return actorMapper.findActorsByName(name);
   }
 
+
+  @Override
+  @Transactional
+  public List<Actor> findOutOfDateActors() {
+    List<Actor> actorList = actorMapper.findOutOfDateActors();
+    actorMapper.updateActors(actorList);
+    actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, RedisUtils.getDomain(valueOperations) + Constants.SLASH + RedisUtils.buildVideoURLWithMode(request)));
+    return actorList;
+  }
+
   @Override
   public int insertActor(Actor actor) {
     int res = actorMapper.insertActor(actor);
@@ -75,6 +87,11 @@ public class ActorServiceImpl implements ActorService {
   @Override
   public int updateActor(Actor actor) {
     return actorMapper.updateActor(actor);
+  }
+
+  @Override
+  public int updateActors(List<Actor> actorList) {
+    return actorMapper.updateActors(actorList);
   }
 
   @Override

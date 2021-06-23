@@ -11,6 +11,8 @@ public class RedisConst {
   public final static String SET_ALL_VIDEO = "SET_ALL_VIDEO";
 
   //spiders related constant
+  public final static int SPIDER_URLS_NUMBER_LIMIT = 50;
+  
   public final static String SPIDER_START_URLS = "start_urls";
 
   public final static String VIDEO_SPIDER = "video_spider";
@@ -36,4 +38,8 @@ public class RedisConst {
   public final static String ACTOR = "ACTOR";
 
   public final static String USER = "USER";
+
+
+  //Scheduled Task Related
+  public final static String ENABLE_SCHEDULED_TASK = "ENABLE_SCHEDULED_TASK";
 }

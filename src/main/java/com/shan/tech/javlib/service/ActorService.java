@@ -19,9 +19,13 @@ public interface ActorService {
 
   List<Actor> findActorsByName(String name);
 
+  List<Actor> findOutOfDateActors();
+
   int insertActor(Actor actor);
 
   int updateActor(Actor actor);
+
+  int updateActors(List<Actor> actorList);
 
   int insertActorsForVideo(List<Actor> actorList, Video video);
 }

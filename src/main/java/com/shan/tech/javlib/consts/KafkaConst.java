@@ -8,6 +8,8 @@ public class KafkaConst {
 
   public final static String VIDEO_TOPIC ="topic.jav.video";
 
+  public final static String VIDEO_TOPIC_DETAIL ="topic.jav.video.detail";
+
   public final static int DEFAULT_PARTITION_NUM = 8;
 
   public final static short DEFAULT_REPLICATION_NUM = 1;

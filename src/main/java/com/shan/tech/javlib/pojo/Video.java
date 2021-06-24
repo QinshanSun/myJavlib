@@ -1,6 +1,7 @@
 package com.shan.tech.javlib.pojo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -27,7 +28,8 @@ public class Video implements Serializable {
 
   private String rated;
 
-  private String released;
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  private Date released;
 
   private String runTime;
 
@@ -58,11 +60,9 @@ public class Video implements Serializable {
   @JsonCreator
   public Video(@JsonProperty("title") String title,
                @JsonProperty("label") String label,
-               @JsonProperty("number") String number,
-               @JsonProperty("released") String released) {
+               @JsonProperty("number") String number) {
     this.title = title;
     this.label = label;
     this.number = number;
-    this.released = released;
   }
 }

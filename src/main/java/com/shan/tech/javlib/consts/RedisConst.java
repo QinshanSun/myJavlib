@@ -17,6 +17,8 @@ public class RedisConst {
 
   public final static String VIDEO_SPIDER = "video_spider";
 
+  public final static String DETAILED_VIDEO_SPIDER = "detailed_video_spider";
+
   public final static String ACTOR_SPIDER = "actor_spider";
 
   public final static String GENRE_SPIDER = "genre_spider";

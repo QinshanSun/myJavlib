@@ -3,7 +3,9 @@ package com.shan.tech.javlib.controller;
 import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.pojo.Actor;
+import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.ActorService;
+import com.shan.tech.javlib.service.VideoService;
 import com.shan.tech.javlib.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -38,6 +40,9 @@ public class RedisController {
     @Autowired
     private ActorService actorService;
 
+    @Autowired
+    private VideoService videoService;
+
     @PostMapping("/actor")
     public void updateActor(@RequestParam(name = "type", required = false) String type) {
        if (StringUtils.hasText(type)){
@@ -68,6 +73,16 @@ public class RedisController {
         } else {
             // todo need to find another smart way to update the video
             List<Actor> actorList = actorService.findOutOfDateActors();
+        }
+    }
+
+    @PostMapping("/video/detail")
+    public void updateVideoDetail(@RequestParam(name = "label", required = false) String label) {
+        if (StringUtils.hasText(label)) {
+            RedisUtils.pushSpiderStartURL(listOperations, RedisConst.DETAILED_VIDEO_SPIDER, URL + Constants.SLASH + label);
+        } else {
+            // todo need to find another smart way to update the video
+
         }
     }
 

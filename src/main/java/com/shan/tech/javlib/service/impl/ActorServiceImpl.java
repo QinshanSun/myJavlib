@@ -68,7 +68,9 @@ public class ActorServiceImpl implements ActorService {
   @Transactional
   public List<Actor> findOutOfDateActors() {
     List<Actor> actorList = actorMapper.findOutOfDateActors();
-    actorMapper.updateActors(actorList);
+    if (actorList.size() > 0){
+      actorMapper.updateActors(actorList);
+    }
     actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, RedisUtils.getDomain(valueOperations) + Constants.SLASH + RedisUtils.buildVideoURLWithMode(request)));
     return actorList;
   }

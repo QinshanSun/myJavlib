@@ -10,7 +10,7 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="year" property="year" jdbcType="INTEGER"/>
         <result column="rated" property="rated" jdbcType="VARCHAR"/>
-        <result column="released" property="released" jdbcType="VARCHAR"/>
+        <result column="released" property="released" jdbcType="DATE"/>
         <result column="runtime" property="runTime" jdbcType="INTEGER"/>
         <result column="director" property="director" jdbcType="VARCHAR"/>
         <result column="plot" property="plot" jdbcType="VARCHAR"/>
@@ -30,7 +30,7 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="year" property="year" jdbcType="INTEGER"/>
         <result column="rated" property="rated" jdbcType="VARCHAR"/>
-        <result column="released" property="released" jdbcType="VARCHAR"/>
+        <result column="released" property="released" jdbcType="DATE"/>
         <result column="runtime" property="runTime" jdbcType="INTEGER"/>
         <result column="director" property="director" jdbcType="VARCHAR"/>
         <result column="plot" property="plot" jdbcType="VARCHAR"/>

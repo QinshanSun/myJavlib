@@ -12,7 +12,7 @@ public class RedisConst {
 
   //spiders related constant
   public final static int SPIDER_URLS_NUMBER_LIMIT = 50;
-  
+
   public final static String SPIDER_START_URLS = "start_urls";
 
   public final static String VIDEO_SPIDER = "video_spider";
@@ -35,7 +35,7 @@ public class RedisConst {
 
   public final static String URL_START = "http://www.";
 
-  public  final static  String URL_END = ".com/cn";
+  public final static String URL_END = ".com/cn";
 
   public final static String ACTOR = "ACTOR";
 

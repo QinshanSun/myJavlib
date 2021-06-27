@@ -67,7 +67,7 @@
         </foreach>
     </update>
     <insert id="insertActorsForVideo">
-        INSERT INTO actor_video (actor_id, video_id)
+        REPLACE INTO actor_video (actor_id, video_id)
         VALUES
         <foreach collection="actorList" item="actor" separator=",">
             (#{actor.id}, #{video.id})

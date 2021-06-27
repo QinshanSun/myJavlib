@@ -11,6 +11,8 @@ public interface VideoService {
 
   Optional<Video> findById(Long id);
 
+  List<Video> findOutOfDateVideos();
+
   List<Video> findVideosByTitle(String title);
 
   Optional<Video> findDetailedVideoById(Long id);

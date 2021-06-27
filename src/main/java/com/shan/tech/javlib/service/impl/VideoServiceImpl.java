@@ -1,5 +1,6 @@
 package com.shan.tech.javlib.service.impl;
 
+import com.shan.tech.javlib.consts.Constants;
 import com.shan.tech.javlib.consts.RedisConst;
 import com.shan.tech.javlib.mapper.ActorMapper;
 import com.shan.tech.javlib.mapper.GenreMapper;
@@ -8,8 +9,11 @@ import com.shan.tech.javlib.pojo.Actor;
 import com.shan.tech.javlib.pojo.Genre;
 import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.VideoService;
+import com.shan.tech.javlib.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -30,9 +34,27 @@ public class VideoServiceImpl implements VideoService {
   @Autowired
   private SetOperations<String, String> stringSetOperations;
 
+
+  @Autowired
+  private ListOperations<String, String> listOperations;
+
+
+  @Autowired
+  private ValueOperations<String, String> valueOperations;
+
   @Override
   public Optional<Video> findById(Long id) {
     return videoMapper.findById(id);
+  }
+
+  @Override
+  public List<Video> findOutOfDateVideos() {
+    List<Video> videoList = videoMapper.findOutOfDateVideos();
+    if (videoList.size() > 0){
+      videoList.stream().parallel().map(video -> video.getLabel().replace(".","")).collect(Collectors.toSet()).forEach(label ->
+              RedisUtils.pushSpiderStartURL(listOperations, RedisConst.DETAILED_VIDEO_SPIDER, RedisUtils.getDomain(valueOperations) + label));
+    }
+    return videoList;
   }
 
   @Override
@@ -62,12 +84,16 @@ public class VideoServiceImpl implements VideoService {
     videoMapper.updateVideo(video);
     Optional<Video> updateVideoOptional = videoMapper.findByLabel(video.getLabel());
     if (updateVideoOptional.isPresent()) {
-      List<String> actorLabels = video.getActorList().stream().map(Actor::getLabel).collect(Collectors.toList());
-      List<Actor> actorList = actorMapper.findByLabels(actorLabels);
-      actorMapper.insertActorsForVideo(actorList, updateVideoOptional.get());
-      List<String> genreLabels = video.getGenreList().stream().map(Genre::getLabel).collect(Collectors.toList());
-      List<Genre> genreList = genreMapper.findByLabels(genreLabels);
-      genreMapper.insertGenresForVideo(genreList, updateVideoOptional.get());
+      if (!CollectionUtils.isEmpty(video.getActorList())){
+        List<String> actorLabels = video.getActorList().stream().map(Actor::getLabel).collect(Collectors.toList());
+        List<Actor> actorList = actorMapper.findByLabels(actorLabels);
+        actorMapper.insertActorsForVideo(actorList, updateVideoOptional.get());
+      }
+      if (!CollectionUtils.isEmpty(video.getGenreList())){
+        List<String> genreLabels = video.getGenreList().stream().map(Genre::getLabel).collect(Collectors.toList());
+        List<Genre> genreList = genreMapper.findByLabels(genreLabels);
+        genreMapper.insertGenresForVideo(genreList, updateVideoOptional.get());
+      }
     }
     return 1;
   }

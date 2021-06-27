@@ -146,6 +146,29 @@
         updated_date
         FROM video
     </select>
+    <select id="findOutOfDateVideos" resultMap="BaseVideoResultMap">
+        SELECT id,
+        title,
+        label,
+        number,
+        title,
+        year,
+        rated,
+        released,
+        runtime,
+        director,
+        plot,
+        poster,
+        rating,
+        meta_score,
+        votes,
+        producer,
+        publisher,
+        created_date,
+        updated_date
+        FROM video
+        WHERE updated_date IS NULL || DATEDIFF(SYSDATE(),updated_date) > 10 LIMIT 100;
+    </select>
     <select id="findDetailedVideoById" resultMap="DetailedVideoResultMap">
         SELECT v.id,
         v.title,
@@ -200,14 +223,14 @@
         </foreach>
     </insert>
     <insert id="insertGenresForVideo">
-        INSERT INTO genre_video (genre_id, video_id)
+        REPLACE INTO genre_video (genre_id, video_id)
         VALUES
         <foreach collection="genreList" item="genre" separator=",">
             (#{genre.id}, #{video.id})
         </foreach>
     </insert>
     <insert id="insertActorsForVideo">
-        INSERT INTO actor_video (actor_id, video_id)
+        REPLACE INTO actor_video (actor_id, video_id)
         VALUES
         <foreach collection="actorList" item="actor" separator=",">
             (#{actor.id}, #{video.id})

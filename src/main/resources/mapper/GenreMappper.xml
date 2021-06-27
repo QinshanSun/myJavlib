@@ -47,7 +47,7 @@
         </foreach>
     </insert>
     <insert id="insertGenresForVideo">
-        INSERT INTO genre_video (genre_id, video_id)
+        REPLACE INTO genre_video (genre_id, video_id)
         VALUES
         <foreach collection="genreList" item="genre" separator=",">
             (#{genre.id}, #{video.id})

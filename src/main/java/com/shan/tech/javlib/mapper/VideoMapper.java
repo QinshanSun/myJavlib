@@ -18,6 +18,8 @@ public interface VideoMapper {
 
   List<Video> findAll();
 
+  List<Video> findOutOfDateVideos();
+
   List<Video> findVideosByTitle(String title);
 
   Optional<Video> findDetailedVideoById(Long id);

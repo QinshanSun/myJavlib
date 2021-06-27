@@ -12,23 +12,25 @@ import java.util.Optional;
 @Mapper
 public interface ActorMapper {
 
-    Optional<Actor> findById(Long id);
+  Optional<Actor> findById(Long id);
 
-    List<Actor> findByLabel(String label);
+  List<Actor> findByLabel(String label);
 
-    List<Actor> findAll();
+  List<Actor> findByLabels(List<String> labels);
 
-    List<Actor> findActorsByName(@Param("name") String name);
+  List<Actor> findAll();
 
-    List<Actor> findOutOfDateActors();
+  List<Actor> findActorsByName(@Param("name") String name);
 
-    int insertActor(Actor actor);
+  List<Actor> findOutOfDateActors();
 
-    int updateActor(Actor actor);
+  int insertActor(Actor actor);
 
-    int updateActors(List<Actor> actorList);
+  int updateActor(Actor actor);
 
-    Page<Actor> findByPage();
+  int updateActors(List<Actor> actorList);
 
-    int insertActorsForVideo(List<Actor> actorList, Video video);
+  Page<Actor> findByPage();
+
+  int insertActorsForVideo(List<Actor> actorList, Video video);
 }

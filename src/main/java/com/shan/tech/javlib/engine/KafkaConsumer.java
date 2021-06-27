@@ -106,20 +106,18 @@ public class KafkaConsumer {
   }
 
 
-
   @KafkaListener(id = "video_detail", clientIdPrefix = "video-batch", topics = {KafkaConst.VIDEO_TOPIC_DETAIL}, containerFactory = "batchContainerFactory")
-    public void consumeVideoDetail(@Payload String videoString) {
-    logger.info("topic.quick.batch video  receive : " + videoString);
+  public void consumeVideoDetail(@Payload String videoString) {
+    logger.info("topic.quick.batch video  receive : ");
+    logger.info("Video: " + videoString);
     try {
-      if (!videoString.isEmpty()){
-        Video video = objectMapper.readValue(videoString, Video.class);
-        logger.info("Video: " + video);
-      }
+      Video video = objectMapper.readValue(videoString, Video.class);
+      int res = videoService.updateVideo(video);
+      logger.info("Video: " + video + ", success: " + res);
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
   }
-
 
 
   @Autowired

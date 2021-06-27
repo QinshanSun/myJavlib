@@ -22,6 +22,15 @@
         FROM actor
         WHERE label = #{label}
     </select>
+    <select id="findByLabels" resultMap="BaseActorResultMap">
+        SELECT id, name, label, type, created_date, updated_date, used_name
+        FROM actor
+        WHERE label IN
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
     <select id="findAll" resultMap="BaseActorResultMap">
         SELECT id, name, label, type, created_date, updated_date, used_name
         FROM actor
@@ -58,9 +67,9 @@
         </foreach>
     </update>
     <insert id="insertActorsForVideo">
-        INSERT INTO genre_video (actor_id, video_id)
+        INSERT INTO actor_video (actor_id, video_id)
         VALUES
-        <foreach collection="list" item="actor" separator=",">
+        <foreach collection="actorList" item="actor" separator=",">
             (#{actor.id}, #{video.id})
         </foreach>
     </insert>

@@ -18,6 +18,15 @@
         FROM genre
         WHERE label = #{label}
     </select>
+    <select id="findByLabels" resultMap="BaseResultMap">
+        SELECT id, name, label
+        FROM genre
+        WHERE label IN
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
     <select id="findGenresByName" resultMap="BaseResultMap">
         <bind name="patten" value="'%' + name + '%'"/>
         SELECT id, name, label
@@ -40,7 +49,7 @@
     <insert id="insertGenresForVideo">
         INSERT INTO genre_video (genre_id, video_id)
         VALUES
-        <foreach collection="list" item="genre" separator=",">
+        <foreach collection="genreList" item="genre" separator=",">
             (#{genre.id}, #{video.id})
         </foreach>
     </insert>

@@ -17,6 +17,8 @@ public interface VideoService {
 
   int insertVideo(Video video);
 
+  int updateVideo(Video video);
+
   int insertVideoList(List<Video> videoList);
 
   int insertGenresForVideo(List<Genre> genreList, Video video);

@@ -13,8 +13,10 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -48,9 +50,26 @@ public class VideoServiceImpl implements VideoService {
   public int insertVideo(Video video) {
     if (video == null)
       return 0;
-    int res =  videoMapper.insertVideo(video);
+    int res = videoMapper.insertVideo(video);
     stringSetOperations.add(RedisConst.SET_ALL_VIDEO, video.getLabel());
     return res;
+  }
+
+  @Override
+  @Transactional
+  public int updateVideo(Video video) {
+    video.setYear(video.getReleased().getYear());
+    videoMapper.updateVideo(video);
+    Optional<Video> updateVideoOptional = videoMapper.findByLabel(video.getLabel());
+    if (updateVideoOptional.isPresent()) {
+      List<String> actorLabels = video.getActorList().stream().map(Actor::getLabel).collect(Collectors.toList());
+      List<Actor> actorList = actorMapper.findByLabels(actorLabels);
+      actorMapper.insertActorsForVideo(actorList, updateVideoOptional.get());
+      List<String> genreLabels = video.getGenreList().stream().map(Genre::getLabel).collect(Collectors.toList());
+      List<Genre> genreList = genreMapper.findByLabels(genreLabels);
+      genreMapper.insertGenresForVideo(genreList, updateVideoOptional.get());
+    }
+    return 1;
   }
 
   @Override

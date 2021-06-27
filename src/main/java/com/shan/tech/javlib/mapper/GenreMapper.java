@@ -14,6 +14,8 @@ public interface GenreMapper {
 
   Optional<Genre> findByLabel(String label);
 
+  List<Genre> findByLabels(List<String> label);
+
   List<Genre> findGenresByName(String name);
 
   List<Genre> findAll();

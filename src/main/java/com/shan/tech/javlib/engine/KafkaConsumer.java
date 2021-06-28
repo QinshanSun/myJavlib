@@ -106,7 +106,7 @@ public class KafkaConsumer {
   }
 
 
-  @KafkaListener(id = "video_detail", clientIdPrefix = "video-batch", topics = {KafkaConst.VIDEO_TOPIC_DETAIL}, containerFactory = "batchContainerFactory")
+  @KafkaListener(id = "video_detail", clientIdPrefix = "video-detail-batch", topics = {KafkaConst.VIDEO_TOPIC_DETAIL}, containerFactory = "batchContainerFactory")
   public void consumeVideoDetail(@Payload String videoString) {
     logger.info("topic.quick.batch video  receive : ");
     logger.info("Video: " + videoString);

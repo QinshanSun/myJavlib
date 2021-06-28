@@ -23,4 +23,8 @@ public class KafkaTopic {
     return new NewTopic(KafkaConst.VIDEO_TOPIC, KafkaConst.DEFAULT_PARTITION_NUM, KafkaConst.DEFAULT_REPLICATION_NUM);
   }
 
+  @Bean
+  public NewTopic videoDetailTopic() {
+    return new NewTopic(KafkaConst.VIDEO_TOPIC_DETAIL, KafkaConst.DEFAULT_PARTITION_NUM, KafkaConst.DEFAULT_REPLICATION_NUM);
+  }
 }

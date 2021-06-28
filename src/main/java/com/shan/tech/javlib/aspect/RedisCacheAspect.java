@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Aspect
-public class RedisCacheAspect {
+public class RedisCacheAspect implements RedisAspect{
 
   public static final Logger logger = LoggerFactory.getLogger(RedisCacheAspect.class);
 
@@ -99,29 +99,9 @@ public class RedisCacheAspect {
           return null;
         });
       }
-
-      return result;
     }
 
-    return proceedingJoinPoint.proceed(args);
-  }
-
-
-  /**
-   * get target method
-   *
-   * @param pjp ProceedingJoinPoint
-   * @return target method
-   */
-  private Method getTargetMethod(ProceedingJoinPoint pjp) throws NoSuchMethodException,
-          SecurityException {
-    Signature sig = pjp.getSignature();
-    if (!(sig instanceof MethodSignature)) {
-      throw new IllegalArgumentException("The annotation can only apply to method.");
-    }
-    MethodSignature msig = (MethodSignature) sig;
-    Object target = pjp.getTarget();
-    return target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
+    return result;
   }
 
   /**
@@ -154,31 +134,4 @@ public class RedisCacheAspect {
     return sb.toString();
   }
 
-  /**
-   * serialized string
-   *
-   * @param source objects need to be serialized
-   * @return json string
-   */
-  private String serialize(Object source) {
-    return JSON.toJSONString(source);
-  }
-
-  /**
-   * deserialize
-   *
-   * @param source serialized object string
-   * @param clazz class
-   * @param modelType model type like user genre
-   * @return deserialize object
-   */
-  private Object deserialize(String source, Class<?> clazz, Class<?> modelType) {
-    // check whether string is serialized from List
-    if (clazz.isAssignableFrom(List.class)) {
-      return JSON.parseArray(source, modelType);
-    }
-
-    // deserialize from json
-    return JSON.parseObject(source, clazz);
-  }
 }

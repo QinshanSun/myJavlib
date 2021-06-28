@@ -68,10 +68,10 @@ public class ActorServiceImpl implements ActorService {
   @Transactional
   public List<Actor> findOutOfDateActors() {
     List<Actor> actorList = actorMapper.findOutOfDateActors();
-    if (actorList.size() > 0){
+    if (actorList.size() > 0) {
       actorMapper.updateActors(actorList);
+      actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, RedisUtils.buildVideoURLWithMode(RedisUtils.getDomain(valueOperations), request)));
     }
-    actorList.stream().parallel().map(Actor::getLabel).collect(Collectors.toSet()).forEach(request -> RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, RedisUtils.getDomain(valueOperations) + Constants.SLASH + RedisUtils.buildVideoURLWithMode(request)));
     return actorList;
   }
 
@@ -79,7 +79,7 @@ public class ActorServiceImpl implements ActorService {
   public int insertActor(Actor actor) {
     int res = actorMapper.insertActor(actor);
     // put the actor url for scrapy spider to use
-    if (res > 0){
+    if (res > 0) {
       String URL = RedisUtils.getDomain(valueOperations) + Constants.SLASH + actor.getLabel();
       RedisUtils.pushSpiderStartURL(listOperations, RedisConst.VIDEO_SPIDER, URL);
     }
@@ -100,7 +100,7 @@ public class ActorServiceImpl implements ActorService {
   public int insertActorsForVideo(List<Actor> actorList, Video video) {
     return actorMapper.insertActorsForVideo(actorList, video);
   }
-  
+
   @Autowired
   public void setActorMapper(ActorMapper actorMapper) {
     this.actorMapper = actorMapper;
@@ -112,7 +112,7 @@ public class ActorServiceImpl implements ActorService {
   }
 
   @Autowired
-  public void setListOperations(ListOperations<String, String> listOperations){
+  public void setListOperations(ListOperations<String, String> listOperations) {
     this.listOperations = listOperations;
   }
 

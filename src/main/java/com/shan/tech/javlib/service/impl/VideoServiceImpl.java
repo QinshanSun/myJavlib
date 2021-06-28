@@ -92,7 +92,9 @@ public class VideoServiceImpl implements VideoService {
       if (!CollectionUtils.isEmpty(video.getGenreList())){
         List<String> genreLabels = video.getGenreList().stream().map(Genre::getLabel).collect(Collectors.toList());
         List<Genre> genreList = genreMapper.findByLabels(genreLabels);
-        genreMapper.insertGenresForVideo(genreList, updateVideoOptional.get());
+        if (!CollectionUtils.isEmpty(genreList)){
+          genreMapper.insertGenresForVideo(genreList, updateVideoOptional.get());
+        }
       }
     }
     return 1;

@@ -10,6 +10,7 @@ import com.shan.tech.javlib.pojo.Video;
 import com.shan.tech.javlib.service.ActorService;
 import com.shan.tech.javlib.service.GenreService;
 import com.shan.tech.javlib.service.VideoService;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KafkaConsumer {

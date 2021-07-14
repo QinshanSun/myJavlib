@@ -27,6 +27,10 @@ public class RedisConst {
 
   public final static String ACTOR_PREFIX = "/star_list.php?prefix=";
 
+  public final static String NEW_RELEASE = "/vl_newrelease.php";
+
+  public final static String NEW_ADD = "/vl_newentries.php";
+
   public final static String GENRE_START_URL = "genres.php";
 
   public final static String VIDEO_MODE = "&mode=2&"; // mode 2 means all videos
